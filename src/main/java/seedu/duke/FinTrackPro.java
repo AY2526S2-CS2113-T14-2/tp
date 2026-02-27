@@ -58,17 +58,10 @@ public class FinTrackPro {
                 + period.getMonths() + " months remaining.");
 
         ui.printLine("");
-        ui.printLine("You can now type anything you want");
-        ui.printLine("Type 'bye' to exit!");
+        ui.printLine("Type 'help' to view my currently supported commands!");
+        ui.printLine("Any non-command word would be echoed back to you you you");
         ui.printLine("");
 
-        while (true) {
-            String userInput = ui.readLine(in, "");
-            if (userInput.equalsIgnoreCase("bye")) {
-                ui.goodBye(name);
-                break;
-            }
-            ui.printLine("You said: " + userInput);
         String userInput = ui.readLine(in, "");
         while (!userInput.equalsIgnoreCase("bye")) {
             handleCommand(userInput);
