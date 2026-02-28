@@ -2,6 +2,7 @@ package seedu.duke;
 
 import seedu.duke.ui.Ui;
 import seedu.duke.util.InputUtil;
+import seedu.duke.data.Profile;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -11,29 +12,25 @@ import java.math.BigDecimal;
 public class FinTrackPro {
 
     private final Ui ui;
+    private final Profile profile = new Profile();
 
-    public FinTrackPro(Ui ui){
+    public FinTrackPro(Ui ui) {
         this.ui = ui;
     }
 
     public void run() {
-
         ui.showWelcome();
-
         Scanner in = new Scanner(System.in);
 
-
+        // Name handling
         String name = ui.readLine(in, "What is your name?");
-
-        if (name.isEmpty()){
-            name = "friend";
-        }
-
-        ui.greet(name.trim());
+        name = name.isEmpty() ? "friend" : name.trim();
+        ui.greet(name);
 
         ui.printLine("");
         ui.printLine("Hang tight... I have a few questions for you.");
 
+        // Initial goal setup
         BigDecimal goal = InputUtil.readMoney(ui, in,
                 "What is the total amount that you and your partner have to pay for "
                         + "the downpayment? (in dollars)");
@@ -44,6 +41,7 @@ public class FinTrackPro {
         ui.printLine("Sweeeett. Including 2.5% legal fees, you will need "
                 + InputUtil.formatMoney(totalRequired));
 
+        // Deadline Handling
         LocalDate deadline = InputUtil.readFutureDate(
                 ui,
                 in,
@@ -51,27 +49,28 @@ public class FinTrackPro {
                         + "(Enter in format YYYY-MM-DD)"
         );
         LocalDate today = LocalDate.now();
-
         Period period = Period.between(today, deadline);
 
         ui.printLine("You have " + period.getYears() + " years and "
                 + period.getMonths() + " months remaining.");
 
+        // Help Lines
         ui.printLine("");
         ui.printLine("Type 'help' to view my currently supported commands!");
         ui.printLine("Any non-command word would be echoed back to you you you");
         ui.printLine("");
 
+        // Main Command Loop
         String userInput = ui.readLine(in, "");
         while (!userInput.equalsIgnoreCase("bye")) {
-            handleCommand(userInput);
+            handleCommand(userInput, in);
             userInput = ui.readLine(in, "");
         }
         ui.goodBye(name);
         in.close();
     }
 
-    private void handleCommand(String userInput) {
+    private void handleCommand(String userInput, Scanner in) {
         if (userInput.trim().isEmpty()) {
             ui.printLine("Cannot process empty description!");
             return;
@@ -79,14 +78,62 @@ public class FinTrackPro {
         String command = Parser.parseCommand(userInput);
 
         switch (command) {
+        case "salary":
+            handleSalary(in);
+            break;
+        case "savings":
+            handleSavings(in);
+            break;
+        case "ratio":
+            handleRatio(in);
+            break;
+        case "category":
+            // addCategoryToExpense();
+            break;
         case "help":
             ui.showHelpMessage();
             break;
-        case "category":
-            //addCategoryToExpense();
-            break;
         default:
             ui.printLine("You said: " + userInput);
+            break;
+        }
+    }
+
+    private void handleSalary(Scanner in) {
+        // Show previous input
+        BigDecimal current = profile.getMonthlySalary();
+        ui.printLine("Current monthly salary: " + InputUtil.formatMoney(current));
+
+        // Prompt for update
+        BigDecimal newAmount = InputUtil.readMoney(ui, in, "Enter your new monthly salary:");
+        profile.setMonthlySalary(newAmount);
+
+        ui.printLine("Salary successfully updated to: " + InputUtil.formatMoney(newAmount));
+    }
+
+    private void handleSavings(Scanner in) {
+        // Show previous input
+        BigDecimal current = profile.getCurrentSavings();
+        ui.printLine("Current total savings: " + InputUtil.formatMoney(current));
+
+        // Prompt for update
+        BigDecimal newAmount = InputUtil.readMoney(ui, in, "Enter your new total savings:");
+        profile.setCurrentSavings(newAmount);
+
+        ui.printLine("Savings successfully updated to: " + InputUtil.formatMoney(newAmount));
+    }
+
+    private void handleRatio(Scanner in) {
+        double current = profile.getContributionRatio();
+        ui.printLine("Current BTO contribution share: " + (current * 100) + "%");
+
+        ui.printLine("Enter your new share (e.g., 0.6 for 60%):");
+        try {
+            double newRatio = Double.parseDouble(in.nextLine());
+            profile.setContributionRatio(newRatio);
+            ui.printLine("Contribution ratio updated!");
+        } catch (NumberFormatException e) {
+            ui.printLine("Invalid input. Ratio remains at " + (current * 100) + "%.");
         }
     }
 }
