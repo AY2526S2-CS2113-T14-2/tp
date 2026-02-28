@@ -29,7 +29,7 @@ public class FinTrackPro {
             name = "friend";
         }
 
-        ui.greet(name);
+        ui.greet(name.trim());
 
         ui.printLine("");
         ui.printLine("Hang tight... I have a few questions for you.");
@@ -58,18 +58,35 @@ public class FinTrackPro {
                 + period.getMonths() + " months remaining.");
 
         ui.printLine("");
-        ui.printLine("You can now type anything you want");
-        ui.printLine("Type 'bye' to exit!");
+        ui.printLine("Type 'help' to view my currently supported commands!");
+        ui.printLine("Any non-command word would be echoed back to you you you");
         ui.printLine("");
 
-        while (true) {
-            String userInput = ui.readLine(in, "");
-            if (userInput.equalsIgnoreCase("bye")) {
-                ui.goodBye(name);
-                break;
-            }
+        String userInput = ui.readLine(in, "");
+        while (!userInput.equalsIgnoreCase("bye")) {
+            handleCommand(userInput);
+            userInput = ui.readLine(in, "");
+        }
+        ui.goodBye(name);
+        in.close();
+    }
+
+    private void handleCommand(String userInput) {
+        if (userInput.trim().isEmpty()) {
+            ui.printLine("Cannot process empty description!");
+            return;
+        }
+        String command = Parser.parseCommand(userInput);
+
+        switch (command) {
+        case "help":
+            ui.showHelpMessage();
+            break;
+        case "category":
+            //addCategoryToExpense();
+            break;
+        default:
             ui.printLine("You said: " + userInput);
         }
-        in.close();
     }
 }
