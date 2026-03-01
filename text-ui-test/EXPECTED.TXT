@@ -10,16 +10,16 @@ What is your name?
 Nice to meet you, James Gosling!
 
 Hang tight... I have a few questions for you.
-What is the total amount that you and your partner have to pay for the downpayment? (in dollars)
+What is the total value  that you and your partner have to pay for the house? (in dollars)
 Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try again.
-What is the total amount that you and your partner have to pay for the downpayment? (in dollars)
+What is the total value  that you and your partner have to pay for the house? (in dollars)
 Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try again.
-What is the total amount that you and your partner have to pay for the downpayment? (in dollars)
+What is the total value  that you and your partner have to pay for the house? (in dollars)
 Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try again.
-What is the total amount that you and your partner have to pay for the downpayment? (in dollars)
+What is the total value  that you and your partner have to pay for the house? (in dollars)
 Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try again.
-What is the total amount that you and your partner have to pay for the downpayment? (in dollars)
-Sweeeett. Including 2.5% legal fees, you will need $29,725.00
+What is the total value  that you and your partner have to pay for the house? (in dollars)
+Sweeeett. Including legal fees, you will need $1,522.50
 When do you need to save this money by? (Enter in format YYYY-MM-DD)
 Deadline must be a future date. Try again.
 When do you need to save this money by? (Enter in format YYYY-MM-DD)
