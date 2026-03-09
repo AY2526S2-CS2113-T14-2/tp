@@ -25,25 +25,32 @@ Your personal contribution needed: $913.50
 
 When do you need to save this money by? (e.g., 2028-10-24)
 
-You have 1 years and 6 months remaining.
+You have 1 years and 6 months and 23 days remaining.
+Nice! Based on your current savings, you have already met your goal.
 
 Type 'help' to view my currently supported commands!
 Any non-command word would be echoed back to you you you
 Type 'bye' to exit!
 
 You said: hello
+
+General Commands
 'help'    - view all current commands
 'summary' - generate your BTO readiness report based on your goals
 'bye'     - exit the program
 
+Daily Transaction Commands
 'add'      <amount> - add a new expense (e.g., add 5.50)
 'list'     - view all current expenses and your total spent
 'delete'   <index> - remove a specific expense from your list
 
+Profile & Goal Management
 'savings' - add a surplus amount to your existing savings
 'clear'   - wipe all current expenses from the list
 'reset'   - wipes all profile data and expenses to start fresh.
+
 Your expense list is as empty as my wallet. Go spend some money!
+
 Current total savings: $2,000.00
 Enter amount to add to your savings:
 
@@ -53,12 +60,19 @@ New total savings: $2,500.00
 
 Added expense: $5
 Current Total: $5
+
 Format: add <value(to 2dp)> bro! where is the MONEHHHH
+
 Amount cannot be negative bro who you trying to scam?
+
 You said: category 1 FOOD
+
 You said: category 1
+
 You said: category 1 HELLO
+
 Here is your current expenditure list!
 1. $5.00
 Total Expenditure: $5
+
 Goodbye James Gosling. Stay disciplined and get that house that you always wanted!
