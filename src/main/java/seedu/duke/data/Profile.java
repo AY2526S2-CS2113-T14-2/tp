@@ -126,4 +126,12 @@ public class Profile {
     public BigDecimal getContributionRatio() {
         return contributionRatio;
     }
+
+    public void reset() {
+        this.name = "friend";
+        this.btoGoal = BigDecimal.ZERO;
+        this.monthlySalary = BigDecimal.ZERO;
+        this.currentSavings = BigDecimal.ZERO;
+        this.contributionRatio = new BigDecimal("0.5");
+    }
 }

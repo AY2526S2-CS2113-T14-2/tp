@@ -1,5 +1,8 @@
 package seedu.duke.ui;
 
+import seedu.duke.data.SummaryReport;
+import seedu.duke.util.InputUtil;
+
 import java.util.Scanner;
 
 /**
@@ -78,8 +81,6 @@ public class Ui {
 
         // Daily Transaction Commands
         printLine("'add'      <amount> - add a new expense (e.g., add 5.50)");
-        printLine("'category' <index> <type> - assign a category to an expense");
-        printLine("[Valid types: FOOD, TRANSPORT, GROCERIES, SUBSCRIPTION, OTHER]");
         printLine("'list'     - view all current expenses and your total spent");
         printLine("'delete'   <index> - remove a specific expense from your list");
         printLine("");
@@ -89,4 +90,23 @@ public class Ui {
         printLine("'clear'   - wipe all current expenses from the list");
         printLine("'reset'   - wipes all profile data and expenses to start fresh.");
     }
+
+    /**
+     * Prints a formatted BTO Readiness Report to the console.
+     *
+     * @param report a {@link SummaryReport} containing the user's precomputed financial snapshot.
+     */
+    public void showSummaryReport(SummaryReport report) {
+        printLine("===== BTO Readiness Report =====");
+        printLine("User: " + report.name);
+        printLine("Dateline: " + report.deadline);
+        printLine("BTO Goal: " + InputUtil.formatMoney(report.btoGoal) + " (your share + fees)");
+        printLine("Monthly Salary: " + InputUtil.formatMoney(report.monthlySalary));
+        String savingsLine = InputUtil.formatMoney(report.currentSavings) + " (" + report.percentage + "% reached)";
+        printLine("Current Savings: " + savingsLine);
+        printLine("Distance to Goal: " + InputUtil.formatMoney(report.distance));
+        printLine("Monthly Surplus: " + InputUtil.formatMoney(report.monthlySurplus));
+        printLine("Estimated Goal Achievement: " + report.estimate);
+    }
+
 }
