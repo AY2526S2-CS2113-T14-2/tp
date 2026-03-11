@@ -5,6 +5,8 @@ import seedu.duke.data.Expense;
 import seedu.duke.data.ExpenseList;
 import seedu.duke.data.Storage;
 import seedu.duke.data.SummaryReport;
+import seedu.duke.exception.InvalidAmountException;
+import seedu.duke.exception.InvalidIndexException;
 import seedu.duke.ui.Ui;
 import seedu.duke.util.InputUtil;
 
@@ -42,44 +44,20 @@ public class CommandHandler {
      * @param userInput Full command line entered by the user (starting with {@code add}).
      */
     public void handleAdd(String userInput) {
-        String rest = userInput.substring("add".length()).trim();
+        try {
+            String rest = userInput.substring("add".length()).trim();
+            BigDecimal amount = parseAmount(rest);
 
-        // If there is no input after add
-        if (rest.isEmpty()){
-            ui.printLine("Format: add <value(to 2dp)> bro! where is the MONEHHHH");
+            expenseList.add(amount);
+
+            ui.printLine("Added expense: $" + amount);
+            ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
-            return;
-        }
 
-        BigDecimal amount;
-
-        try{
-            amount = new BigDecimal(rest);
-        } catch (NumberFormatException e) {
-            ui.printLine("Amount must be a valid number bro! What is this garbage!");
+        } catch (InvalidAmountException e) {
+            ui.printLine(e.getMessage());
             ui.printLine("");
-            return;
         }
-
-        //Reject negative values
-        if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            ui.printLine("Amount cannot be negative bro who you trying to scam?");
-            ui.printLine("");
-            return;
-        }
-
-        // Reject >2 decimal places
-        if (amount.scale() > 2) {
-            ui.printLine("Amount must not exceed 2 decimal places bro we dont want your measly cents!");
-            ui.printLine("");
-            return;
-        }
-
-        expenseList.add(amount);
-
-        ui.printLine("Added expense: $" + amount);
-        ui.printLine("Current Total: $" + expenseList.getTotal());
-        ui.printLine("");
     }
 
     /**
@@ -96,28 +74,18 @@ public class CommandHandler {
      * @param userInput Full command line entered by the user (starting with {@code delete}).
      */
     public void handleDelete(String userInput) {
-        String rest = userInput.substring("delete".length()).trim();
+        try {
+            String rest = userInput.substring("delete".length()).trim();
+            int index = parseDeleteIndex(rest);
 
-        // If there is no input after delete
-        if (rest.isEmpty()){
-            ui.printLine("Format: delete <index> bro! where is the INDEXXX");
+            Expense removed = expenseList.delete(index);
+
+            ui.printLine("Deleted expense #" + index + ": $" + removed.getAmount());
+            ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
-            return;
+        } catch (InvalidIndexException e) {
+            ui.printLine(e.getMessage());
         }
-
-        int index = Parser.parseIndex(rest);
-
-        if (!expenseList.isValidIndex(index)) {
-            ui.printLine("Invalid index bro! do you even know how much you've spent?");
-            ui.printLine("");
-            return;
-        }
-
-        Expense removed = expenseList.delete(index);
-
-        ui.printLine("Deleted expense #" + index + ": $" + removed.getAmount());
-        ui.printLine("Current Total: $" + expenseList.getTotal());
-        ui.printLine("");
     }
 
     /**
@@ -211,5 +179,47 @@ public class CommandHandler {
             ui.printLine("Reset aborted. Your data is safe!");
             ui.printLine("");
         }
+    }
+
+    public BigDecimal parseAmount(String rest) throws InvalidAmountException {
+        // If there is no input after add
+        if (rest.isEmpty()) {
+            throw new InvalidAmountException("Format: add <value(to 2dp)> bro! where is the MONEHHHH");
+        }
+
+        BigDecimal amount;
+
+        try {
+            amount = new BigDecimal(rest);
+        } catch (NumberFormatException e) {
+            throw new InvalidAmountException("Amount must be a valid number bro! What is this garbage!");
+        }
+
+        //Reject negative values
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new InvalidAmountException("Amount cannot be negative bro who you trying to scam?");
+        }
+
+        // Reject >2 decimal places
+        if (amount.scale() > 2) {
+            throw new InvalidAmountException("Amount must not exceed 2 decimal places bro!");
+        }
+
+        return amount;
+    }
+
+    public int parseDeleteIndex(String rest) throws InvalidIndexException {
+        // If there is no input after delete
+        if (rest.isEmpty()) {
+            throw new InvalidIndexException("Format: delete <index> bro! where is the INDEXXX");
+        }
+
+        int index = Parser.parseIndex(rest);
+
+        if (!expenseList.isValidIndex(index)) {
+            throw new InvalidIndexException("Invalid index bro! do you even know how much you've spent?");
+        }
+
+        return index;
     }
 }
