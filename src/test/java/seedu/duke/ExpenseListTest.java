@@ -54,5 +54,16 @@ public class ExpenseListTest {
         assertEquals(new BigDecimal("10.00"), expenseList.get(0).getAmount());
         assertEquals(new BigDecimal("20.00"), expenseList.get(1).getAmount());
     }
+    /*
+    *Verify that List transitons from empty to non-empty after the first add
+     */
+    @Test
+    void add_firstExpense_listWasEmptyBefore() {
+        assertTrue(expenseList.isEmpty());
+
+        expenseList.add(new BigDecimal("5.00"));
+
+        assertFalse(expenseList.isEmpty());
+    }
 
 }
