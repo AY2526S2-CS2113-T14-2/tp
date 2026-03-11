@@ -114,5 +114,34 @@ public class ExpenseListTest {
         assertEquals(new BigDecimal("10.00"), expenseList.get(0).getAmount());
         assertEquals(new BigDecimal("30.00"), expenseList.get(1).getAmount());
     }
+    /**
+     * Verifies that passing index {@code 0} throws {@link IndexOutOfBoundsException}
+     * since the list is 1-based.
+     */
+    @Test
+    void delete_invalidIndexZero_throwsException() {
+        expenseList.add(new BigDecimal("10.00"));
 
+        assertThrows(IndexOutOfBoundsException.class, () -> expenseList.delete(0));
+    }
+    /**
+     * Verifies that passing an index greater than the list size throws
+     * {@link IndexOutOfBoundsException}.
+     */
+    @Test
+    void delete_invalidIndexBeyondSize_throwsException() {
+        expenseList.add(new BigDecimal("10.00"));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> expenseList.delete(2));
+    }
+
+    /**
+     * Verifies that calling {@code delete} on an empty list throws
+     * {@link IndexOutOfBoundsException}.
+     */
+    @Test
+    void delete_emptyList_throwsException() {
+        assertThrows(IndexOutOfBoundsException.class, () -> expenseList.delete(1));
+    }
 }
+
