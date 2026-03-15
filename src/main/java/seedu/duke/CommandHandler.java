@@ -146,9 +146,16 @@ public class CommandHandler {
 
         if (response.equals("y")) {
             expenseList.clear();
+
+            // Log at INFO: clearing all expenses is a significant application event
+            logger.info("handleClear executed | all expenses cleared by user confirmation");
+
             ui.printLine("Expense list has been wiped clean. Fresh start!");
             ui.printLine("");
         } else {
+            // Log at INFO: user chose not to clear — still worth recording the decision
+            logger.info("handleClear cancelled | user did not confirm");
+
             ui.printLine("Clear cancelled. Your data is still there, bro.");
             ui.printLine("");
         }
