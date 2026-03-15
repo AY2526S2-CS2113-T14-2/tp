@@ -113,11 +113,17 @@ public class CommandHandler {
             assert removed != null : "Deleted expense should not be null";
             assert expenseList.getTotal().compareTo(oldTotal.subtract(removed.getAmount())) == 0
                     : "Expense total should decrease by removed amount";
+            // Log at INFO: a successful delete is a key application state change
+            logger.info("handleDelete succeeded | index: " + index
+                            + " | removed: $" + removed.getAmount()
+                            + " | new total: $" + expenseList.getTotal());
 
             ui.printLine("Deleted expense #" + index + ": $" + removed.getAmount());
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
         } catch (InvalidIndexException e) {
+            // Log at WARNING: user provided an invalid index that was rejected
+            logger.warning("handleDelete rejected | reason: " + e.getMessage().trim());
             ui.printLine(e.getMessage());
         }
     }
