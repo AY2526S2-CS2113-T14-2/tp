@@ -32,7 +32,7 @@ public class ExpenseList {
         //Post add invariant: List must have grown by exacrtly ony entry
         assert expenses.size() == sizeBeforeAdd + 1
                 : "List size should have increaseed by 1 after add";
-        // Post-add invariant: total must not have decreased
+        // Post-add invariant: total must have been increased only by the amount that was added
         assert total.compareTo(totalBeforeAdd.add(amount)) == 0
                 : "Total should increase by exactly the added amount.";
 
@@ -52,13 +52,16 @@ public class ExpenseList {
     public Expense delete(int indexInList){
         //Capture pre-mutation size to use in post delete assertions
         int sizeBeforeDelete = expenses.size();
+        BigDecimal totalBeforeDelete = total;
         int indexToDelete = indexInList - 1;
         Expense removed = expenses.remove(indexToDelete);
         total = total.subtract(removed.getAmount());
         // Post-delete invariant: list must have shrunk by exactly one entry
         assert expenses.size() == sizeBeforeDelete - 1
                 : "List size should have decreased by 1 after delete.";
-
+        //Post-delete invariant: List must have been excartly deleted by the amoutn that was removed
+        assert total.compareTo(totalBeforeDelete.subtract(removed.getAmount())) == 0
+                : "Total should decrease exactly by removed amount.";
         // Post-delete invariant: total must never be negative
         assert total.compareTo(BigDecimal.ZERO) >= 0
                 : "Total must never be negative.";
