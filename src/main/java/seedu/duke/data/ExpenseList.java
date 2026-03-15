@@ -114,6 +114,10 @@ public class ExpenseList {
      * @return The {@link Expense} at the specified position.
      */
     public Expense get(int index) {
+        Expense expense = expenses.get(index);
+
+        // Invariant: entries stored in the list must never be null
+        assert expense != null : "Retrieved expense should never be null.";
         return expenses.get(index);
     }
 
