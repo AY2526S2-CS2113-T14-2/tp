@@ -17,9 +17,11 @@ public class Expense {
      * @param amount The monetary value of the expense.
      */
     public Expense(BigDecimal amount) {
+        //Invariant: Amount added must never be null
+        assert amount != null : "Expense amount should not be null";
+        //Invariant: Amount input must never be negative
+        assert amount.compareTo(BigDecimal.ZERO) >= 0 : "Expense amount must be non-negative";
         this.amount = amount;
-        //Post-construction invariance where the stored value must match the input exactly
-        assert this.amount.compareTo(amount) == 0 :"Stored amouint does not match input.";
     }
 
     /**
