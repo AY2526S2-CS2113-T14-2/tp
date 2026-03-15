@@ -264,6 +264,7 @@ public class CommandHandler {
 
         // If there is no input after add
         if (rest.isEmpty()) {
+            logger.warning("parseAmount rejected | reason: empty input");
             throw new InvalidAmountException("Format: add <value(to 2dp)> bro! where is the MONEHHHH\n");
         }
 
@@ -272,20 +273,27 @@ public class CommandHandler {
         try {
             amount = new BigDecimal(rest);
         } catch (NumberFormatException e) {
+            // Reject non-numeric input
+            logger.warning("parseAmount rejected | reason: non-numeric input '" + rest + "'");
             throw new InvalidAmountException("Amount must be a valid number bro! What is this garbage!\n");
         }
 
         //Reject negative values
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            logger.warning("parseAmount rejected | reason: negative value " + amount);
             throw new InvalidAmountException("Amount cannot be negative bro who you trying to scam?\n");
         }
 
         // Reject >2 decimal places
         if (amount.scale() > 2) {
+            logger.warning("parseAmount rejected | reason: more than 2 decimal places, value: " + amount);
             throw new InvalidAmountException("Amount must not exceed 2 decimal places bro!\n");
         }
 
         assert amount.compareTo(BigDecimal.ZERO) >= 0 : "Amount should be non-negative";
+
+        // Log at FINE: successful parse is a low-level detail, not a key app event
+        logger.fine("parseAmount succeeded | parsed value: $" + amount);
 
         return amount;
     }
