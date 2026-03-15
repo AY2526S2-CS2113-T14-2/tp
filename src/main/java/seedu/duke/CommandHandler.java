@@ -211,6 +211,9 @@ public class CommandHandler {
      * <p>Results are passed to {@link Ui#showSummaryReport} for display.</p>
      */
     public void handleSummary() {
+
+        // Log at INFO: summary generation is a deliberate user-initiated action
+        logger.info("handleSummary executed | generating BTO readiness report");
         ui.showSummaryReport(new SummaryReport(profile, expenseList));
     }
 
@@ -235,13 +238,22 @@ public class CommandHandler {
             // 2. Overwrite the save file with the empty data
             try {
                 storage.save(profile, expenseList);
+
+                // Log at INFO: full system reset is the most significant application event
+                logger.info("handleReset executed | profile and expenses cleared, save file overwritten");
+
                 ui.printLine("System reset successful. Please restart or type 'bye' to exit.");
                 ui.printLine("");
             } catch (IOException e) {
+                // Log at WARNING: in-memory reset succeeded but disk write failed
+                logger.warning("handleReset | in-memory reset succeeded but save file write failed: "
+                        + e.getMessage());
                 ui.printLine("Error: Could not reset the save file on disk.");
                 ui.printLine("");
             }
         } else {
+            // Log at INFO: user chose not to reset — still worth recording the decision
+            logger.info("handleReset cancelled | user did not confirm");
             ui.printLine("Reset aborted. Your data is safe!");
             ui.printLine("");
         }
