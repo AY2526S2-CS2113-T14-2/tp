@@ -9,12 +9,20 @@ import seedu.duke.exception.InvalidAmountException;
 import seedu.duke.exception.InvalidIndexException;
 import seedu.duke.ui.Ui;
 import seedu.duke.util.InputUtil;
+import seedu.duke.util.LoggerUtil;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class CommandHandler {
+    /**
+     * Logger for recording command handler events.
+     * Routes all output to the central {@code logs/fintrack.log} via {@link LoggerUtil}.
+     */
+    private static final Logger logger = LoggerUtil.getLogger(CommandHandler.class);
+
     private final Ui ui;
     private final Profile profile;
     private final ExpenseList expenseList;
@@ -62,11 +70,17 @@ public class CommandHandler {
             assert expenseList.getTotal().compareTo(oldTotal.add(amount)) == 0
                     : "Expense total should increase by added amount";
 
+            // Log at INFO: a successful add is a key application state change
+            logger.info("handleAdd succeeded | amount: $" + amount
+                    + " | new total: $" + expenseList.getTotal());
+
             ui.printLine("Added expense: $" + amount);
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
 
         } catch (InvalidAmountException e) {
+            // Log at WARNING: user provided invalid input that was rejected
+            logger.warning("handleAdd rejected | reason: " + e.getMessage().trim());
             ui.printLine(e.getMessage());
             ui.printLine("");
         }
@@ -99,11 +113,17 @@ public class CommandHandler {
             assert removed != null : "Deleted expense should not be null";
             assert expenseList.getTotal().compareTo(oldTotal.subtract(removed.getAmount())) == 0
                     : "Expense total should decrease by removed amount";
+            // Log at INFO: a successful delete is a key application state change
+            logger.info("handleDelete succeeded | index: " + index
+                            + " | removed: $" + removed.getAmount()
+                            + " | new total: $" + expenseList.getTotal());
 
             ui.printLine("Deleted expense #" + index + ": $" + removed.getAmount());
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
         } catch (InvalidIndexException e) {
+            // Log at WARNING: user provided an invalid index that was rejected
+            logger.warning("handleDelete rejected | reason: " + e.getMessage().trim());
             ui.printLine(e.getMessage());
         }
     }
@@ -126,9 +146,16 @@ public class CommandHandler {
 
         if (response.equals("y")) {
             expenseList.clear();
+
+            // Log at INFO: clearing all expenses is a significant application event
+            logger.info("handleClear executed | all expenses cleared by user confirmation");
+
             ui.printLine("Expense list has been wiped clean. Fresh start!");
             ui.printLine("");
         } else {
+            // Log at INFO: user chose not to clear — still worth recording the decision
+            logger.info("handleClear cancelled | user did not confirm");
+
             ui.printLine("Clear cancelled. Your data is still there, bro.");
             ui.printLine("");
         }
@@ -157,6 +184,10 @@ public class CommandHandler {
         assert profile.getCurrentSavings().compareTo(updatedSavings) == 0
                 : "Profile savings should match updated savings";
 
+        // Log at INFO: savings update is a key profile state change
+        logger.info("handleSavings executed | deposited: $" + depositAmount
+                + " | new savings total: $" + updatedSavings);
+
         ui.printLine("");
         ui.printLine("Transaction successful!");
         ui.printLine("Added: " + InputUtil.formatMoney(depositAmount));
@@ -180,6 +211,9 @@ public class CommandHandler {
      * <p>Results are passed to {@link Ui#showSummaryReport} for display.</p>
      */
     public void handleSummary() {
+
+        // Log at INFO: summary generation is a deliberate user-initiated action
+        logger.info("handleSummary executed | generating BTO readiness report");
         ui.showSummaryReport(new SummaryReport(profile, expenseList));
     }
 
@@ -204,13 +238,22 @@ public class CommandHandler {
             // 2. Overwrite the save file with the empty data
             try {
                 storage.save(profile, expenseList);
+
+                // Log at INFO: full system reset is the most significant application event
+                logger.info("handleReset executed | profile and expenses cleared, save file overwritten");
+
                 ui.printLine("System reset successful. Please restart or type 'bye' to exit.");
                 ui.printLine("");
             } catch (IOException e) {
+                // Log at WARNING: in-memory reset succeeded but disk write failed
+                logger.warning("handleReset | in-memory reset succeeded but save file write failed: "
+                        + e.getMessage());
                 ui.printLine("Error: Could not reset the save file on disk.");
                 ui.printLine("");
             }
         } else {
+            // Log at INFO: user chose not to reset — still worth recording the decision
+            logger.info("handleReset cancelled | user did not confirm");
             ui.printLine("Reset aborted. Your data is safe!");
             ui.printLine("");
         }
@@ -221,6 +264,7 @@ public class CommandHandler {
 
         // If there is no input after add
         if (rest.isEmpty()) {
+            logger.warning("parseAmount rejected | reason: empty input");
             throw new InvalidAmountException("Format: add <value(to 2dp)> bro! where is the MONEHHHH\n");
         }
 
@@ -229,20 +273,27 @@ public class CommandHandler {
         try {
             amount = new BigDecimal(rest);
         } catch (NumberFormatException e) {
+            // Reject non-numeric input
+            logger.warning("parseAmount rejected | reason: non-numeric input '" + rest + "'");
             throw new InvalidAmountException("Amount must be a valid number bro! What is this garbage!\n");
         }
 
         //Reject negative values
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            logger.warning("parseAmount rejected | reason: negative value " + amount);
             throw new InvalidAmountException("Amount cannot be negative bro who you trying to scam?\n");
         }
 
         // Reject >2 decimal places
         if (amount.scale() > 2) {
+            logger.warning("parseAmount rejected | reason: more than 2 decimal places, value: " + amount);
             throw new InvalidAmountException("Amount must not exceed 2 decimal places bro!\n");
         }
 
         assert amount.compareTo(BigDecimal.ZERO) >= 0 : "Amount should be non-negative";
+
+        // Log at FINE: successful parse is a low-level detail, not a key app event
+        logger.fine("parseAmount succeeded | parsed value: $" + amount);
 
         return amount;
     }
@@ -252,14 +303,20 @@ public class CommandHandler {
 
         // If there is no input after delete
         if (rest.isEmpty()) {
+            logger.warning("parseDeleteIndex rejected | reason: empty input");
             throw new InvalidIndexException("Format: delete <index> bro! where is the INDEXXX\n");
         }
 
         int index = Parser.parseIndex(rest);
 
         if (!expenseList.isValidIndex(index)) {
+            logger.warning("parseDeleteIndex rejected | reason: index " + index
+                    + " out of range, list size: " + expenseList.size());
             throw new InvalidIndexException("Invalid index bro! do you even know how much you've spent?\n");
         }
+
+        // Log at FINE: successful parse is a low-level detail, not a key app event
+        logger.fine("parseDeleteIndex succeeded | parsed index: " + index);
         
         return index;
     }
