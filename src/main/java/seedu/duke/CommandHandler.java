@@ -70,6 +70,10 @@ public class CommandHandler {
             assert expenseList.getTotal().compareTo(oldTotal.add(amount)) == 0
                     : "Expense total should increase by added amount";
 
+            // Log at INFO: a successful add is a key application state change
+            logger.info("handleAdd succeeded | amount: $" + amount
+                    + " | new total: $" + expenseList.getTotal());
+
             ui.printLine("Added expense: $" + amount);
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
