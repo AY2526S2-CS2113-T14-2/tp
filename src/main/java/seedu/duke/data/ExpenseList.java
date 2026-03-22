@@ -33,12 +33,13 @@ public class ExpenseList {
         assert category != null : "Expense category should not be null.";
         //Added to capture pre mutation state for post mutation assertions
         int sizeBeforeAdd = expenses.size();
+        int insertionOrder = expenses.size();
         BigDecimal totalBeforeAdd = total;
 
-        Expense expense = new Expense(name, amount, category);
+        Expense expense = new Expense(name, amount, category, insertionOrder);
         expenses.add(expense);
         total = total.add(amount);
-        //Post add invariant: List must have grown by exacrtly ony entry
+        //Post add invariant: List must have grown by exactly ony entry
         assert expenses.size() == sizeBeforeAdd + 1
                 : "List size should have increaseed by 1 after add";
         // Post-add invariant: total must have been increased only by the amount that was added
@@ -49,6 +50,14 @@ public class ExpenseList {
         assert total.compareTo(BigDecimal.ZERO) >= 0
                 : "Total must never be negative.";
 
+    }
+
+    // Used by Storage only — preserves original insertion order from file
+    public void add(String name, BigDecimal amount, Category category, int insertionOrder) {
+        assert insertionOrder >= 0 : "Insertion order should be non-negative";
+        Expense expense = new Expense(name, amount, category, insertionOrder);
+        expenses.add(expense);
+        total = total.add(amount);
     }
 
     /**
@@ -151,5 +160,13 @@ public class ExpenseList {
         return expenses.stream()
                 .sorted(Comparator.comparing(Expense::getCategory))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public void sortByCategory() {
+        expenses.sort(Comparator.comparing(Expense::getCategory));
+    }
+
+    public void sortByRecent() {
+        expenses.sort(Comparator.comparingInt(Expense::getInsertionOrder));
     }
 }

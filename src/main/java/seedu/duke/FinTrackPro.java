@@ -266,7 +266,7 @@ public class FinTrackPro {
             break;
         case "list":
             logger.info("Executing list command.");
-            printSortedList(userInput.trim().equalsIgnoreCase("list sorted"));
+            printList();
             break;
         case "help":
             logger.info("Executing help command.");
@@ -296,6 +296,10 @@ public class FinTrackPro {
             logger.warning("User attempting full financial reset");
             handler.handleReset(in);
             break;
+        case "sort":
+            logger.info("Executing sort command.");
+            handler.handleSort(userInput);
+            break;
         default:
             logger.warning("Unknown command entered. Echoing user input.");
             ui.printLine("You said: " + userInput);
@@ -312,7 +316,7 @@ public class FinTrackPro {
      * <p>Also checks the user's spending goal from {@link Profile}.
      * If total expenditure exceeds the goal, prints an alert with the exceeded amount.</p>
      */
-    private void printSortedList(boolean isSorted){
+    private void printList(){
         if (expenseList.isEmpty()) {
             logger.info("Expense list requested, but list is empty.");
             ui.printLine("Your expense list is as empty as my wallet. Go spend some money!");
@@ -320,15 +324,11 @@ public class FinTrackPro {
             return;
         }
 
-        ArrayList<Expense> displayList = isSorted
-                ? expenseList.getSortedByCategory()
-                : expenseList.getRaw();
-
         logger.info("Printing expense list. Number of expenses: " + expenseList.size());
         ui.printLine("Here is your current expenditure list!");
 
-        for (int i = 0; i < displayList.size(); i++) {
-            Expense expense = displayList.get(i);
+        for (int i = 0; i < expenseList.size(); i++) {
+            Expense expense = expenseList.get(i);
             String formattedAmount = InputUtil.formatMoney(expense.getAmount());
             ui.printLine( (i + 1) +  ". " +
                     expense.getName() + " " +
@@ -341,5 +341,4 @@ public class FinTrackPro {
         ui.printLine("Total Expenditure: $" +  totalSpent);
         ui.printLine("");
     }
-
 }

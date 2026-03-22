@@ -95,7 +95,7 @@ public class CommandHandler {
                     + " | category: " + args.category
                     + " | new total: $" + expenseList.getTotal());
 
-            ui.printLine("Added expense: " + new Expense(args.name, args.amount, args.category));
+            ui.printLine("Added expense: " + expenseList.get(expenseList.size() - 1));
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
 
@@ -449,5 +449,49 @@ public class CommandHandler {
         logger.fine("parseDeleteIndex succeeded | parsed index: " + index);
         
         return index;
+    }
+
+    /**
+     * Sorts the expense list by the specified sort argument.
+     *
+     * <p>Expected format: {@code sort <argument>}</p>
+     *
+     * <p>Recognised arguments:
+     * <ul>
+     *   <li>{@code category} — sorts expenses by category sort order</li>
+     *   <li>{@code recent} — restores expenses to original insertion order</li>
+     * </ul>
+     * </p>
+     *
+     * <p>Any other argument is rejected with an error message.</p>
+     *
+     * @param userInput Full command line entered by the user, beginning with {@code sort}.
+     */
+    public void handleSort(String userInput) {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("sort") : "Input should start with 'sort'!";
+
+        String arg = userInput.substring("sort".length()).trim();
+
+        switch (arg.toLowerCase()) {
+        case "category":
+            expenseList.sortByCategory();
+            logger.info("handleSort executed | sort type: category");
+            ui.printLine("Expenses sorted by category.");
+            ui.printLine("");
+            break;
+        case "recent":
+            expenseList.sortByRecent();
+            logger.info("handleSort executed | sort type: recent");
+            ui.printLine("Expenses sorted by insertion order.");
+            ui.printLine("");
+
+            break;
+        default:
+            logger.warning("handleSort rejected | unknown argument: " + arg);
+            ui.printLine("Wrong argument la bro! Use 'sort category' or 'sort recent' ONLY!");
+            ui.printLine("");
+            break;
+        }
     }
 }

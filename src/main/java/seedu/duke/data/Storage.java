@@ -67,10 +67,11 @@ public class Storage {
                 assert e.getName() != null : "Expense name at index " + i + " is null";
                 assert e.getAmount() != null : "Expense amount at index " + i + " is null";
                 assert e.getCategory() != null : "Expense category at index " + i + " is null";
-                fw.write(String.format("E | %s | %s | %s%n",
+                fw.write(String.format("E | %s | %s | %s | %s%n",
                         e.getName(),
                         e.getAmount(),
-                        e.getCategory()));
+                        e.getCategory(),
+                        e.getInsertionOrder()));
             }
             logger.log(Level.INFO, "Save successful.");
         } catch (IOException e) {
@@ -134,6 +135,12 @@ public class Storage {
                         BigDecimal amount = new BigDecimal(parts[2]);
                         Category category = Category.fromString(parts[3]);
                         expenseList.add(name, amount, category);
+                    } else if (parts.length == 5) {
+                        String name = parts[1];
+                        BigDecimal amount = new BigDecimal(parts[2]);
+                        Category category = Category.fromString(parts[3]);
+                        int insertionOrder = Integer.parseInt(parts[4]);
+                        expenseList.add(name, amount, category, insertionOrder);
                     } else {
                         logger.log(Level.WARNING, "Skipping malformed expense line: " + line);
                     }
