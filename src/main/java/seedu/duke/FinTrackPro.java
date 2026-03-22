@@ -308,7 +308,8 @@ public class FinTrackPro {
     }
 
     /**
-     * Prints the current expense list and total expenditure.
+     * Prints the current expense list including expense name, cost and category assigned
+     * and the total expenditure so far.
      *
      * <p>If the list is empty, prints a message indicating no expenses exist.</p>
      *

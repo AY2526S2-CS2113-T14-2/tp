@@ -14,11 +14,12 @@ public class Expense {
     private final int insertionOrder;
 
     /**
-     * Constructs a new {@code Expense} with the specified name, amount, and category.
+     * Constructs a new {@code Expense} with the specified name, amount, category and insertion order
      *
      * @param name Name or description of the expense.
      * @param amount Monetary value of the expense.
      * @param category Category assigned to the expense.
+     * @param insertionOrder Insertion order assigned to the expense, used for sorting.
      */
     public Expense(String name, BigDecimal amount, Category category, int insertionOrder) {
         //Invariant: Name added must never be null

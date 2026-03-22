@@ -52,6 +52,15 @@ public class ExpenseList {
 
     }
 
+    /**
+     * Creates a new expense with the specified name, amount, category and insertion order,
+     * adds it to the list, and updates the running total.
+     *
+     * @param name Name or description of the expense.
+     * @param amount Monetary value of the expense.
+     * @param category Category assigned to the expense.
+     * @param insertionOrder Insertion order assigned to the expense, used for sorting.
+     */
     // Used by Storage only — preserves original insertion order from file
     public void add(String name, BigDecimal amount, Category category, int insertionOrder) {
         assert insertionOrder >= 0 : "Insertion order should be non-negative";
@@ -152,20 +161,25 @@ public class ExpenseList {
         assert total.compareTo(BigDecimal.ZERO) == 0 : "Total should be zero after clear.";
     }
 
-    public ArrayList<Expense> getRaw() {
-        return new ArrayList<>(expenses);
-    }
-
-    public ArrayList<Expense> getSortedByCategory() {
-        return expenses.stream()
-                .sorted(Comparator.comparing(Expense::getCategory))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
+    /**
+     * Sorts the expense list in place by category sort order.
+     *
+     * <p>Uses the natural ordering defined by {@link seedu.duke.category.Category#compareTo},
+     * where each category's sort priority determines its position.
+     * The sort is stable, so expenses within the same category
+     * retain their relative insertion order.</p>
+     */
     public void sortByCategory() {
         expenses.sort(Comparator.comparing(Expense::getCategory));
     }
 
+    /**
+     * Sorts the expense list in place by original insertion order.
+     *
+     * <p>Restores the list to the order in which expenses were added,
+     * using the insertion index stored on each {@link Expense} at the time
+     * it was created.</p>
+     */
     public void sortByRecent() {
         expenses.sort(Comparator.comparingInt(Expense::getInsertionOrder));
     }
