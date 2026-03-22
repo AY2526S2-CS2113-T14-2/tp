@@ -29,6 +29,18 @@ public class CommandHandler {
     private final ExpenseList expenseList;
     private final Storage storage;
 
+    private static class AddArguments {
+        private final String name;
+        private final BigDecimal amount;
+        private final Category category;
+
+        private AddArguments(String name, BigDecimal amount, Category category) {
+            this.name = name;
+            this.amount = amount;
+            this.category = category;
+        }
+    }
+
     public CommandHandler(Ui ui, Profile profile, ExpenseList expenseList, Storage storage) {
         assert ui != null : "Ui should not be null";
         assert profile != null : "Profile should not be null";
@@ -69,55 +81,20 @@ public class CommandHandler {
         assert userInput.startsWith("add") : "Input should start with 'add'";
 
         try {
-            String rest = userInput.substring("add".length()).trim();
-
-            if (rest.isEmpty()) {
-                logger.warning("handleAdd rejected | reason: empty input");
-                throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
-            }
-
-            String[] parts = rest.split("\\s+");
-
-            if (parts.length < 3) {
-                logger.warning("handleAdd rejected | reason: insufficient arguments");
-                throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
-            }
-
-            String categoryString = parts[parts.length - 1];
-            String amountString = parts[parts.length - 2];
-
-            StringBuilder nameBuilder = new StringBuilder();
-            for (int i = 0; i < parts.length - 2; i++) {
-                if (i > 0) {
-                    nameBuilder.append(" ");
-                }
-                nameBuilder.append(parts[i]);
-            }
-
-            String name = nameBuilder.toString();
-
-            if (name.isBlank()) {
-                logger.warning("handleAdd rejected | reason: blank expense name");
-                throw new InvalidAmountException("Expense name cannot be empty.\n");
-            }
-
-            BigDecimal amount = parseAmount(amountString);
-
-            // To be provided by category implementation
-            Category category = Category.fromString(categoryString);
+            AddArguments args = parseAddArguments(userInput);
 
             BigDecimal oldTotal = expenseList.getTotal();
-            expenseList.add(name, amount, category);
+            expenseList.add(args.name, args.amount, args.category);
 
-            assert expenseList.getTotal().compareTo(oldTotal.add(amount)) == 0
+            assert expenseList.getTotal().compareTo(oldTotal.add(args.amount)) == 0
                     : "Expense total should increase by added amount";
 
-            logger.info("handleAdd succeeded | name: " + name
-                    + " | amount: $" + amount
-                    + " | category: " + category
+            logger.info("handleAdd succeeded | name: " + args.name
+                    + " | amount: $" + args.amount
+                    + " | category: " + args.category
                     + " | new total: $" + expenseList.getTotal());
 
-            ui.printLine("Added expense: " + new Expense(name, amount, category));
+            ui.printLine("Added expense: " + new Expense(args.name, args.amount, args.category));
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
 
@@ -125,6 +102,60 @@ public class CommandHandler {
             ui.printLine(e.getMessage());
             ui.printLine("");
         }
+    }
+    /**
+     * Parses the arguments of an {@code add} command into an expense name,
+     * amount, and category.
+     *
+     * <p>The final token is treated as the category, the second-last token
+     * as the amount, and all preceding tokens are treated as the expense name.
+     * This allows expense names to contain multiple words.</p>
+     *
+     * @param userInput Full command line entered by the user, beginning with {@code add}.
+     * @return A parsed {@code AddArguments} object containing the expense details.
+     * @throws InvalidAmountException If the input is missing fields, contains a blank name,
+     *                                or contains an invalid amount.
+     */
+    private AddArguments parseAddArguments(String userInput) throws InvalidAmountException {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("add") : "Input should start with 'add'";
+
+        String rest = userInput.substring("add".length()).trim();
+
+        if (rest.isEmpty()) {
+            logger.warning("handleAdd rejected | reason: empty input");
+            throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
+        }
+
+        String[] parts = rest.split("\\s+");
+
+        if (parts.length < 3) {
+            logger.warning("handleAdd rejected | reason: insufficient arguments");
+            throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
+        }
+
+        String categoryString = parts[parts.length - 1];
+        String amountString = parts[parts.length - 2];
+
+        StringBuilder nameBuilder = new StringBuilder();
+        for (int i = 0; i < parts.length - 2; i++) {
+            if (i > 0) {
+                nameBuilder.append(" ");
+            }
+            nameBuilder.append(parts[i]);
+        }
+
+        String name = nameBuilder.toString();
+
+        if (name.isBlank()) {
+            logger.warning("handleAdd rejected | reason: blank expense name");
+            throw new InvalidAmountException("Expense name cannot be empty.\n");
+        }
+
+        BigDecimal amount = parseAmount(amountString);
+        Category category = Category.fromString(categoryString);
+
+        return new AddArguments(name, amount, category);
     }
     /**
      * Deletes an expense entry from the {@link ExpenseList} by 1-based index.
@@ -299,32 +330,38 @@ public class CommandHandler {
         }
     }
 
-    public BigDecimal parseAmount(String rest) throws InvalidAmountException {
-        assert rest != null : "Amount input should not be null";
+    /**
+     * Parses and validates an amount string.
+     *
+     * <p>The amount must be a valid non-negative number with at most
+     * 2 decimal places.</p>
+     *
+     * @param amountString Raw amount string to parse.
+     * @return Parsed amount as a {@link BigDecimal}.
+     * @throws InvalidAmountException If the amount is empty, non-numeric,
+     *                                negative, or has more than 2 decimal places.
+     */
+    public BigDecimal parseAmount(String amountString) throws InvalidAmountException {
+        assert amountString != null : "Amount input should not be null";
 
-        // If there is no input after add
-        if (rest.isEmpty()) {
+        if (amountString.isBlank()) {
             logger.warning("parseAmount rejected | reason: empty input");
-            throw new InvalidAmountException("Format: add <value(to 2dp)> bro! where is the MONEHHHH\n");
+            throw new InvalidAmountException("Amount cannot be empty.\n");
         }
 
         BigDecimal amount;
-
         try {
-            amount = new BigDecimal(rest);
+            amount = new BigDecimal(amountString);
         } catch (NumberFormatException e) {
-            // Reject non-numeric input
-            logger.warning("parseAmount rejected | reason: non-numeric input '" + rest + "'");
-            throw new InvalidAmountException("Amount must be a valid number bro! What is this garbage!\n");
+            logger.warning("parseAmount rejected | reason: non-numeric input '" + amountString + "'");
+            throw new InvalidAmountException("Amount must be a valid number.\n");
         }
 
-        //Reject negative values
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             logger.warning("parseAmount rejected | reason: negative value " + amount);
             throw new InvalidAmountException("Amount cannot be negative bro who you trying to scam?\n");
         }
 
-        // Reject >2 decimal places
         if (amount.scale() > 2) {
             logger.warning("parseAmount rejected | reason: more than 2 decimal places, value: " + amount);
             throw new InvalidAmountException("Amount must not exceed 2 decimal places bro!\n");
@@ -332,9 +369,7 @@ public class CommandHandler {
 
         assert amount.compareTo(BigDecimal.ZERO) >= 0 : "Amount should be non-negative";
 
-        // Log at FINE: successful parse is a low-level detail, not a key app event
         logger.fine("parseAmount succeeded | parsed value: $" + amount);
-
         return amount;
     }
 
