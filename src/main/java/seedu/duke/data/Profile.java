@@ -3,6 +3,8 @@ package seedu.duke.data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import seedu.duke.util.BtoCalculator;
+
 /**
  * Manages the user's personal financial data, including income, savings,
  * and specific targets for BTO downpayment planning.
@@ -14,6 +16,12 @@ public class Profile {
     private BigDecimal btoGoal;
     private BigDecimal contributionRatio;
     private LocalDate deadline = LocalDate.now();
+    private BigDecimal housePrice;
+
+    public void setHousePrice(BigDecimal housePrice) {
+        assert housePrice != null && housePrice.compareTo(BigDecimal.ZERO) >= 0;
+        this.housePrice = housePrice;
+    }
 
     /**
      * Initialises a profile with zero Allowance/Savings and a default 50/50 split ratio.
@@ -125,11 +133,18 @@ public class Profile {
      */
     public void setContributionRatio(BigDecimal contributionRatio) {
         assert contributionRatio != null : "Contribution ratio cannot be null";
+
         // Ensure the ratio is between 0% and 100%
         assert contributionRatio.compareTo(BigDecimal.ZERO) >= 0 &&
                 contributionRatio.compareTo(BigDecimal.ONE) <= 0
                 : "Contribution ratio must be between 0.0 and 1.0";
         this.contributionRatio = contributionRatio;
+
+        // Set new btoGoal if ratio changed
+        if (this.housePrice != null) {
+            BtoCalculator calc = new BtoCalculator(this.housePrice, this.contributionRatio);
+            this.btoGoal = calc.yourShare;
+        }
     }
 
     /**

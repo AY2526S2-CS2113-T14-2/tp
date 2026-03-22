@@ -159,6 +159,7 @@ public class FinTrackPro {
         BigDecimal housePrice = InputUtil.readMoney(ui, in,
                 "What is the total value that you and your partner have to pay for "
                         + "the house? (in dollars)");
+        profile.setHousePrice(housePrice);
         logger.info("House price recorded: " + housePrice);
         ui.printLine("");
 
