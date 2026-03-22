@@ -330,32 +330,38 @@ public class CommandHandler {
         }
     }
 
-    public BigDecimal parseAmount(String rest) throws InvalidAmountException {
-        assert rest != null : "Amount input should not be null";
+    /**
+     * Parses and validates an amount string.
+     *
+     * <p>The amount must be a valid non-negative number with at most
+     * 2 decimal places.</p>
+     *
+     * @param amountString Raw amount string to parse.
+     * @return Parsed amount as a {@link BigDecimal}.
+     * @throws InvalidAmountException If the amount is empty, non-numeric,
+     *                                negative, or has more than 2 decimal places.
+     */
+    public BigDecimal parseAmount(String amountString) throws InvalidAmountException {
+        assert amountString != null : "Amount input should not be null";
 
-        // If there is no input after add
-        if (rest.isEmpty()) {
+        if (amountString.isBlank()) {
             logger.warning("parseAmount rejected | reason: empty input");
-            throw new InvalidAmountException("Format: add <value(to 2dp)> bro! where is the MONEHHHH\n");
+            throw new InvalidAmountException("Amount cannot be empty.\n");
         }
 
         BigDecimal amount;
-
         try {
-            amount = new BigDecimal(rest);
+            amount = new BigDecimal(amountString);
         } catch (NumberFormatException e) {
-            // Reject non-numeric input
-            logger.warning("parseAmount rejected | reason: non-numeric input '" + rest + "'");
-            throw new InvalidAmountException("Amount must be a valid number bro! What is this garbage!\n");
+            logger.warning("parseAmount rejected | reason: non-numeric input '" + amountString + "'");
+            throw new InvalidAmountException("Amount must be a valid number.\n");
         }
 
-        //Reject negative values
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             logger.warning("parseAmount rejected | reason: negative value " + amount);
             throw new InvalidAmountException("Amount cannot be negative bro who you trying to scam?\n");
         }
 
-        // Reject >2 decimal places
         if (amount.scale() > 2) {
             logger.warning("parseAmount rejected | reason: more than 2 decimal places, value: " + amount);
             throw new InvalidAmountException("Amount must not exceed 2 decimal places bro!\n");
@@ -363,9 +369,7 @@ public class CommandHandler {
 
         assert amount.compareTo(BigDecimal.ZERO) >= 0 : "Amount should be non-negative";
 
-        // Log at FINE: successful parse is a low-level detail, not a key app event
         logger.fine("parseAmount succeeded | parsed value: $" + amount);
-
         return amount;
     }
 
