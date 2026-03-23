@@ -1,6 +1,7 @@
 package seedu.duke.data;
 
 import java.math.BigDecimal;
+import seedu.duke.category.Category;
 
 /**
  * Represents an individual financial expense within the FinTrackPro system.
@@ -10,16 +11,17 @@ public class Expense {
     private final String name;
     private final BigDecimal amount;
     private final Category category;
-
+    private final int insertionOrder;
 
     /**
-     * Constructs a new {@code Expense} with the specified name, amount, and category.
+     * Constructs a new {@code Expense} with the specified name, amount, category and insertion order
      *
      * @param name Name or description of the expense.
      * @param amount Monetary value of the expense.
      * @param category Category assigned to the expense.
+     * @param insertionOrder Insertion order assigned to the expense, used for sorting.
      */
-    public Expense(String name, BigDecimal amount, Category category) {
+    public Expense(String name, BigDecimal amount, Category category, int insertionOrder) {
         //Invariant: Name added must never be null
         assert name != null && !name.isBlank() : "Expense name should not be null or blank";
         //Invariant: Amount added must never be null
@@ -28,10 +30,13 @@ public class Expense {
         assert amount.compareTo(BigDecimal.ZERO) >= 0 : "Expense amount must be non-negative";
         //Invariant: Category Added should not be null
         assert category != null : "Expense category should not be null";
+        //Invariant: Insertion order should be more than 0
+        assert insertionOrder >= 0 : "Insertion order must be non-negative";
 
         this.name = name;
         this.amount = amount;
         this.category = category;
+        this.insertionOrder = insertionOrder;
     }
 
     /**
@@ -76,4 +81,7 @@ public class Expense {
         return "[" + category + "] " + name + " $" + amount;
     }
 
+    public int getInsertionOrder() {
+        return insertionOrder;
+    }
 }

@@ -5,6 +5,7 @@ import seedu.duke.data.Storage;
 import seedu.duke.ui.Ui;
 import seedu.duke.util.BtoCalculator;
 import seedu.duke.util.InputUtil;
+
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import seedu.duke.data.Profile;
@@ -294,6 +295,10 @@ public class FinTrackPro {
             logger.warning("User attempting full financial reset");
             handler.handleReset(in);
             break;
+        case "sort":
+            logger.info("Executing sort command.");
+            handler.handleSort(userInput);
+            break;
         default:
             logger.warning("Unknown command entered. Echoing user input.");
             ui.printLine("You said: " + userInput);
@@ -303,7 +308,8 @@ public class FinTrackPro {
     }
 
     /**
-     * Prints the current expense list and total expenditure.
+     * Prints the current expense list including expense name, cost and category assigned
+     * and the total expenditure so far.
      *
      * <p>If the list is empty, prints a message indicating no expenses exist.</p>
      *
@@ -324,7 +330,10 @@ public class FinTrackPro {
         for (int i = 0; i < expenseList.size(); i++) {
             Expense expense = expenseList.get(i);
             String formattedAmount = InputUtil.formatMoney(expense.getAmount());
-            ui.printLine( (i + 1) +  ". " + formattedAmount);
+            ui.printLine( (i + 1) +  ". " +
+                    expense.getName() + " " +
+                    formattedAmount + " " +
+                    "[" + expense.getCategory() + "]");
         }
 
         BigDecimal totalSpent = expenseList.getTotal();
@@ -332,5 +341,4 @@ public class FinTrackPro {
         ui.printLine("Total Expenditure: $" +  totalSpent);
         ui.printLine("");
     }
-
 }

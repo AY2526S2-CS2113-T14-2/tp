@@ -1,12 +1,13 @@
 package seedu.duke;
 
-import seedu.duke.data.Category;
+import seedu.duke.category.Category;
 import seedu.duke.data.Expense;
 import seedu.duke.data.ExpenseList;
 import seedu.duke.data.Profile;
 import seedu.duke.data.Storage;
 import seedu.duke.data.SummaryReport;
 import seedu.duke.exception.InvalidAmountException;
+import seedu.duke.exception.InvalidCategoryException;
 import seedu.duke.exception.InvalidIndexException;
 import seedu.duke.ui.Ui;
 import seedu.duke.util.InputUtil;
@@ -94,11 +95,11 @@ public class CommandHandler {
                     + " | category: " + args.category
                     + " | new total: $" + expenseList.getTotal());
 
-            ui.printLine("Added expense: " + new Expense(args.name, args.amount, args.category));
+            ui.printLine("Added expense: " + expenseList.get(expenseList.size() - 1));
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
 
-        } catch (InvalidAmountException e) {
+        } catch (InvalidAmountException | InvalidCategoryException e) {
             ui.printLine(e.getMessage());
             ui.printLine("");
         }
@@ -116,7 +117,7 @@ public class CommandHandler {
      * @throws InvalidAmountException If the input is missing fields, contains a blank name,
      *                                or contains an invalid amount.
      */
-    private AddArguments parseAddArguments(String userInput) throws InvalidAmountException {
+    private AddArguments parseAddArguments(String userInput) throws InvalidAmountException, InvalidCategoryException {
         assert userInput != null : "User input should not be null";
         assert userInput.startsWith("add") : "Input should start with 'add'";
 
@@ -150,6 +151,12 @@ public class CommandHandler {
         if (name.isBlank()) {
             logger.warning("handleAdd rejected | reason: blank expense name");
             throw new InvalidAmountException("Expense name cannot be empty.\n");
+        }
+
+        if (!Category.isValid(categoryString)) {
+            logger.warning("handleAdd rejected | reason: invalid category " + categoryString);
+            throw new InvalidCategoryException("Invalid category! Valid categories: " +
+                    "FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER\n");
         }
 
         BigDecimal amount = parseAmount(amountString);
@@ -442,5 +449,49 @@ public class CommandHandler {
         logger.fine("parseDeleteIndex succeeded | parsed index: " + index);
         
         return index;
+    }
+
+    /**
+     * Sorts the expense list by the specified sort argument.
+     *
+     * <p>Expected format: {@code sort <argument>}</p>
+     *
+     * <p>Recognised arguments:
+     * <ul>
+     *   <li>{@code category} — sorts expenses by category sort order</li>
+     *   <li>{@code recent} — restores expenses to original insertion order</li>
+     * </ul>
+     * </p>
+     *
+     * <p>Any other argument is rejected with an error message.</p>
+     *
+     * @param userInput Full command line entered by the user, beginning with {@code sort}.
+     */
+    public void handleSort(String userInput) {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("sort") : "Input should start with 'sort'!";
+
+        String arg = userInput.substring("sort".length()).trim();
+
+        switch (arg.toLowerCase()) {
+        case "category":
+            expenseList.sortByCategory();
+            logger.info("handleSort executed | sort type: category");
+            ui.printLine("Expenses sorted by category.");
+            ui.printLine("");
+            break;
+        case "recent":
+            expenseList.sortByRecent();
+            logger.info("handleSort executed | sort type: recent");
+            ui.printLine("Expenses sorted by insertion order.");
+            ui.printLine("");
+
+            break;
+        default:
+            logger.warning("handleSort rejected | unknown argument: " + arg);
+            ui.printLine("Wrong argument la bro! Use 'sort category' or 'sort recent' ONLY!");
+            ui.printLine("");
+            break;
+        }
     }
 }
