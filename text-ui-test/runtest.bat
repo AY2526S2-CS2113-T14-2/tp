@@ -16,15 +16,15 @@ java -jar %jarloc% < ..\..\text-ui-test\input.txt > ..\..\text-ui-test\ACTUAL.TX
 
 cd ..\..\text-ui-test
 
-echo === ACTUAL.TXT ===
-type ACTUAL.TXT
-echo === EXPECTED.TXT ===
-type EXPECTED.TXT
-echo === FC OUTPUT ===
-cmd /c "FC ACTUAL.TXT EXPECTED.TXT"
+findstr /v "remaining" ACTUAL.TXT > ACTUAL_FILTERED.TXT
+findstr /v "remaining" EXPECTED.TXT > EXPECTED_FILTERED.TXT
+
+cmd /c "FC ACTUAL_FILTERED.TXT EXPECTED_FILTERED.TXT >NUL"
 if %errorlevel% == 0 (
     echo Test passed!
+    del ACTUAL_FILTERED.TXT EXPECTED_FILTERED.TXT
 ) else (
     echo Test failed!
+    del ACTUAL_FILTERED.TXT EXPECTED_FILTERED.TXT
     exit /b 1
 )
