@@ -428,7 +428,7 @@ public class CommandHandler {
 
         // Log at INFO: summary generation is a deliberate user-initiated action
         logger.info("handleSummary executed | generating BTO readiness report");
-        ui.showSummaryReport(new SummaryReport(profile, expenseList));
+        ui.showSummaryReport(new SummaryReport(profile, expenseList, recurringExpenseList));
     }
 
     /**
