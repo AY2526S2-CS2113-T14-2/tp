@@ -116,6 +116,7 @@ public class Ui {
         printLine("'sort'   <keyword> - sort the expenditure list by name, category or recency " +
                 "(e.g sort name, sort recent, sort category)");
         printLine("'savings' - add a surplus amount to your existing savings");
+        printLine("'save'   - archive current month's expenses and advance to next month");
         printLine("'clear'   - wipe all current expenses from the list");
         printLine("'reset'   - wipes all profile data and expenses to start fresh.");
         printLine("");

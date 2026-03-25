@@ -20,14 +20,13 @@ public class Profile {
     private int currentMonth = 1;
 
     /**
-     * Initialises a profile with zero Allowance/Savings and a default 50/50 split ratio.
+     * Initializes a profile with zero Allowance/Savings and a default 50/50 split ratio.
      */
     public Profile() {
         this.monthlyAllowance = BigDecimal.ZERO;
         this.currentSavings = BigDecimal.ZERO;
         this.contributionRatio = new BigDecimal("0.5");
         this.btoGoal = BigDecimal.ZERO;
-        this.currentMonth = 1;
     }
 
     /**
@@ -177,25 +176,15 @@ public class Profile {
 
     /**
      * Gets the current month number.
-     *
-     * @return The month number (1-indexed, starting from 1).
+     * @return The current month as an integer (starting from 1).
      */
     public int getCurrentMonth() {
         return currentMonth;
     }
 
     /**
-     * Sets the current month number.
-     *
-     * @param monthNumber The month number to set (must be positive).
-     */
-    public void setCurrentMonth(int monthNumber) {
-        assert monthNumber > 0 : "Month number must be positive";
-        this.currentMonth = monthNumber;
-    }
-
-    /**
      * Advances to the next month.
+     * Increments the current month counter by 1.
      */
     public void advanceMonth() {
         this.currentMonth++;

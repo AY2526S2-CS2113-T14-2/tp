@@ -641,11 +641,11 @@ public class CommandHandler {
             profile.setCurrentSavings(newSavings);
             logger.info("Transferred unspent amount to savings | amount=" + unspentAmount
                     + " | newSavings=" + newSavings);
-            ui.printLine("Transferred $" + InputUtil.formatMoney(unspentAmount) + " of unspent "
+            ui.printLine("Transferred " + InputUtil.formatMoney(unspentAmount) + " of unspent "
                     + "allowance to savings");
         } else if (unspentAmount.compareTo(BigDecimal.ZERO) < 0) {
             logger.info("Overspent this month | deficit=" + unspentAmount.negate());
-            ui.printLine("You overspent by $" + InputUtil.formatMoney(unspentAmount.negate()));
+            ui.printLine("You overspent by " + InputUtil.formatMoney(unspentAmount.negate()));
         } else {
             logger.info("No unspent allowance this month");
             ui.printLine("You spent exactly your monthly allowance");
@@ -661,8 +661,8 @@ public class CommandHandler {
         logger.info("Advanced to next month | currentMonth=" + nextMonth);
 
         ui.printLine("Advanced to Month " + nextMonth);
-        ui.printLine("Current Savings: $" + InputUtil.formatMoney(profile.getCurrentSavings()));
-        ui.printLine("Monthly Allowance: $" + InputUtil.formatMoney(monthlyAllowance));
+        ui.printLine("Current Savings: " + InputUtil.formatMoney(profile.getCurrentSavings()));
+        ui.printLine("Monthly Allowance: " + InputUtil.formatMoney(monthlyAllowance));
         ui.printLine("");
     }
 }
