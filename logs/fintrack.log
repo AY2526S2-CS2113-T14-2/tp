@@ -836,3 +836,181 @@
 [2026-03-25 21:40:42] [INFO] seedu.duke.CommandHandler - formatMoney succeeded | amount: 2660, formatted: $2,660.00
 [2026-03-25 21:40:42] [INFO] seedu.duke.FinTrackPro - state=list.total.computed | expected=render total and return to command loop | totalAllMonths=2660, oneOffTotal=0, recurringTotal=0, combinedTotal=2660
 [2026-03-25 21:40:42] [INFO] seedu.duke.CommandHandler - formatMoney succeeded | amount: 2660, formatted: $2,660.00
+[2026-03-25 21:52:55] [WARNING] seedu.duke.ui.Ui - No more input available. Returning bye.
+[2026-03-25 21:52:55] [INFO] seedu.duke.FinTrackPro - state=run.command-loop.exit | expected=persist in-memory data | exitCommand=bye
+[2026-03-25 21:52:55] [INFO] seedu.duke.data.Storage - Saving financial data to fintrack.txt
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit6050324192827380115\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit6050324192827380115\monthly_archives\Month1
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10416022940155524697\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4782695555000485069\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit4782695555000485069\monthly_archives\Month1
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 2 expenses to: C:\Users\User\AppData\Local\Temp\junit4782695555000485069\monthly_archives\Month2
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 2 archived successfully with 1 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit18323934590072732863\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10876348153623123982\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit12900457497593352827\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit18093440045999694158\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit18093440045999694158\monthly_archives\Month1
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10171456563786697634\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit10171456563786697634\monthly_archives\Month1
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10961440908455671015\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit10961440908455671015\monthly_archives\Month1
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15267043749416487350\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit8149039310156136670\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit3700094780041638822\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit3700094780041638822\monthly_archives\Month1
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit1909452861225367475\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit1909452861225367475\monthly_archives\Month1
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 2 expenses
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit9970901126004608564\monthly_archives
+[2026-03-25 21:53:01] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15958031413190194783\monthly_archives
+[2026-03-25 21:53:07] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit12647700570961380953\monthly_archives
+[2026-03-25 21:53:07] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit12647700570961380953\monthly_archives\Month1
+[2026-03-25 21:53:07] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15651995787761285425\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4761998122492934834\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit4761998122492934834\monthly_archives\Month1
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 2 expenses to: C:\Users\User\AppData\Local\Temp\junit4761998122492934834\monthly_archives\Month2
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Month 2 archived successfully with 1 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit3734264136191848942\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit7992511154864483895\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit3102473975954126455\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit17985726311324629410\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit17985726311324629410\monthly_archives\Month1
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit11338492193612453357\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit11338492193612453357\monthly_archives\Month1
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15553111608414996770\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit15553111608414996770\monthly_archives\Month1
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10505816069656494425\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4195428434798937729\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit16867171806581262937\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit16867171806581262937\monthly_archives\Month1
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit1668514497419391572\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit1668514497419391572\monthly_archives\Month1
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 2 expenses
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit16989589978692236750\monthly_archives
+[2026-03-25 21:53:08] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit11503022332023842850\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit12094101589571370167\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit12094101589571370167\monthly_archives\Month1
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit2058809387873855297\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit14247547383502033428\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit14247547383502033428\monthly_archives\Month1
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 2 expenses to: C:\Users\User\AppData\Local\Temp\junit14247547383502033428\monthly_archives\Month2
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 2 archived successfully with 1 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15458686672656865817\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit3157383958635360761\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit87422303239990825\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15960961259741254329\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit15960961259741254329\monthly_archives\Month1
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit14855571024716333557\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit14855571024716333557\monthly_archives\Month1
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit11295042247304697668\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit11295042247304697668\monthly_archives\Month1
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit5938990258918452358\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4448268869240760699\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit2140818471770558914\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit2140818471770558914\monthly_archives\Month1
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit3551935519788891031\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit3551935519788891031\monthly_archives\Month1
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 2 expenses
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit13089370610433623645\monthly_archives
+[2026-03-25 21:53:39] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit14901234582085219610\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit13231198741216402328\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit12136453924805187438\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit12136453924805187438\monthly_archives\Month1
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10215673156945849722\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit12487366891058473827\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit12487366891058473827\monthly_archives\Month1
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 2 expenses to: C:\Users\User\AppData\Local\Temp\junit12487366891058473827\monthly_archives\Month2
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 2 archived successfully with 1 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4517509086447757164\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit18045587442609365888\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit16313117283628623415\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10110208250033642617\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit481016585338683330\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit481016585338683330\monthly_archives\Month1
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit7229538807230950948\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit7229538807230950948\monthly_archives\Month1
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit1670878872130587190\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit616710935395566493\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit7775069881256990742\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit7775069881256990742\monthly_archives\Month1
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4194125415206112175\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit1286969983649716278\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit13621270758997256449\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15369649112491494871\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit15369649112491494871\monthly_archives\Month1
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit8014177425337122775\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit8014177425337122775\monthly_archives\Month1
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 2 expenses
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit494131863506085587\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit221190367154905068\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit8096782598493758342\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit5073462622487185204\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit8049188748511597267\monthly_archives
+[2026-03-25 21:57:48] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit12065043850640472336\monthly_archives
+[2026-03-25 21:57:48] [WARNING] seedu.duke.data.MonthlyArchive - Skipping malformed archived expense line: this line is malformed
+[2026-03-25 21:59:13] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit6269694891129391940\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10308069664838303236\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit10308069664838303236\monthly_archives\Month1
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit12045206460628161927\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit7849579840442955116\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit7849579840442955116\monthly_archives\Month1
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 2 expenses to: C:\Users\User\AppData\Local\Temp\junit7849579840442955116\monthly_archives\Month2
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 2 archived successfully with 1 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4959156011682942591\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit288202455156079248\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit7408409213219638080\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit10753949756127001444\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit5714387198079087208\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit5714387198079087208\monthly_archives\Month1
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit5793567399565284850\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit5793567399565284850\monthly_archives\Month1
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit6826943201956803086\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit13151788155849883784\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit1806057271687246415\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit1806057271687246415\monthly_archives\Month1
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 1 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit11119393088191254835\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit2978941644826576371\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit1622070020024551838\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit1313051639889286999\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit1313051639889286999\monthly_archives\Month1
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 0 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit573228812757382989\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archiving Month 1 expenses to: C:\Users\User\AppData\Local\Temp\junit573228812757382989\monthly_archives\Month1
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Month 1 archived successfully with 2 expenses
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit15230020069208542766\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit141450572929590149\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit4280572020713786392\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit8435600007295554407\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit9320411491826129765\monthly_archives
+[2026-03-25 21:59:14] [INFO] seedu.duke.data.MonthlyArchive - Archive directory created at: C:\Users\User\AppData\Local\Temp\junit8540545060317002027\monthly_archives
+[2026-03-25 21:59:14] [WARNING] seedu.duke.data.MonthlyArchive - Skipping malformed archived expense line: this line is malformed
