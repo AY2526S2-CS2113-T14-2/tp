@@ -17,6 +17,7 @@ public class Profile {
     private BigDecimal contributionRatio;
     private LocalDate deadline = LocalDate.now();
     private BigDecimal housePrice;
+    private int currentMonth = 1;
 
     /**
      * Initialises a profile with zero Allowance/Savings and a default 50/50 split ratio.
@@ -26,6 +27,7 @@ public class Profile {
         this.currentSavings = BigDecimal.ZERO;
         this.contributionRatio = new BigDecimal("0.5");
         this.btoGoal = BigDecimal.ZERO;
+        this.currentMonth = 1;
     }
 
     /**
@@ -173,11 +175,38 @@ public class Profile {
         return contributionRatio;
     }
 
+    /**
+     * Gets the current month number.
+     *
+     * @return The month number (1-indexed, starting from 1).
+     */
+    public int getCurrentMonth() {
+        return currentMonth;
+    }
+
+    /**
+     * Sets the current month number.
+     *
+     * @param monthNumber The month number to set (must be positive).
+     */
+    public void setCurrentMonth(int monthNumber) {
+        assert monthNumber > 0 : "Month number must be positive";
+        this.currentMonth = monthNumber;
+    }
+
+    /**
+     * Advances to the next month.
+     */
+    public void advanceMonth() {
+        this.currentMonth++;
+    }
+
     public void reset() {
         this.name = "friend";
         this.btoGoal = BigDecimal.ZERO;
         this.monthlyAllowance = BigDecimal.ZERO;
         this.currentSavings = BigDecimal.ZERO;
         this.contributionRatio = new BigDecimal("0.5");
+        this.currentMonth = 1;
     }
 }

@@ -3,7 +3,10 @@ package seedu.duke;
 import seedu.duke.category.Category;
 import seedu.duke.data.Expense;
 import seedu.duke.data.ExpenseList;
+import seedu.duke.data.MonthlyArchive;
 import seedu.duke.data.Profile;
+import seedu.duke.data.RecurringExpense;
+import seedu.duke.data.RecurringExpenseList;
 import seedu.duke.data.Storage;
 import seedu.duke.data.SummaryReport;
 import seedu.duke.exception.InvalidAmountException;
@@ -28,29 +31,35 @@ public class CommandHandler {
     private final Ui ui;
     private final Profile profile;
     private final ExpenseList expenseList;
+    private final RecurringExpenseList recurringExpenseList;
     private final Storage storage;
 
     private static class AddArguments {
         private final String name;
         private final BigDecimal amount;
         private final Category category;
+        private final boolean recurring;
 
-        private AddArguments(String name, BigDecimal amount, Category category) {
+        private AddArguments(String name, BigDecimal amount, Category category, boolean recurring) {
             this.name = name;
             this.amount = amount;
             this.category = category;
+            this.recurring = recurring;
         }
     }
 
-    public CommandHandler(Ui ui, Profile profile, ExpenseList expenseList, Storage storage) {
+    public CommandHandler(Ui ui, Profile profile, ExpenseList expenseList, RecurringExpenseList recurringExpenseList,
+                          Storage storage) {
         assert ui != null : "Ui should not be null";
         assert profile != null : "Profile should not be null";
         assert expenseList != null : "ExpenseList should not be null";
+        assert recurringExpenseList != null : "RecurringExpenseList should not be null";
         assert storage != null : "Storage should not be null";
 
         this.ui = ui;
         this.profile = profile;
         this.expenseList = expenseList;
+        this.recurringExpenseList = recurringExpenseList;
         this.storage = storage;
     }
 
@@ -83,7 +92,22 @@ public class CommandHandler {
 
         try {
             AddArguments args = parseAddArguments(userInput);
+            if (args.recurring) {
+                int oldSize = recurringExpenseList.size();
+                recurringExpenseList.add(new RecurringExpense(args.name, args.amount, args.category));
 
+                assert recurringExpenseList.size() == oldSize + 1
+                        : "Recurring expense list size should increase by one after add";
+
+                logger.info("handleAdd succeeded | recurring expense | name: " + args.name
+                        + " | amount: $" + args.amount
+                        + " | category: " + args.category);
+
+                ui.printLine("Added recurring expense: " + recurringExpenseList.get(recurringExpenseList.size() - 1));
+                ui.printLine("Recurring Total: $" + recurringExpenseList.getTotal());
+                ui.printLine("");
+                return;
+            }
             BigDecimal oldTotal = expenseList.getTotal();
             expenseList.add(args.name, args.amount, args.category);
 
@@ -96,7 +120,7 @@ public class CommandHandler {
                     + " | new total: $" + expenseList.getTotal());
 
             ui.printLine("Added expense: " + expenseList.get(expenseList.size() - 1));
-            ui.printLine("Current Total: $" + expenseList.getTotal());
+            ui.printLine("Month " + profile.getCurrentMonth() + " Total: $" + expenseList.getTotal());
             ui.printLine("");
 
         } catch (InvalidAmountException | InvalidCategoryException e) {
@@ -129,17 +153,34 @@ public class CommandHandler {
         }
 
         String[] parts = rest.split("\\s+");
+        boolean recurring = parts[parts.length - 1].equalsIgnoreCase("recurring");
 
-        if (parts.length < 3) {
+        if (!recurring && parts.length < 3) {
             logger.warning("handleAdd rejected | reason: insufficient arguments");
-            throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
+            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
         }
 
-        String categoryString = parts[parts.length - 1];
-        String amountString = parts[parts.length - 2];
+        if (recurring && parts.length < 4) {
+            logger.warning("handleAdd rejected | reason: insufficient arguments for recurring expense");
+            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+        }
+
+        String categoryString;
+        String amountString;
+        int nameEndExclusive;
+
+        if (recurring) {
+            categoryString = parts[parts.length - 2];
+            amountString = parts[parts.length - 3];
+            nameEndExclusive = parts.length - 3;
+        } else {
+            categoryString = parts[parts.length - 1];
+            amountString = parts[parts.length - 2];
+            nameEndExclusive = parts.length - 2;
+        }
 
         StringBuilder nameBuilder = new StringBuilder();
-        for (int i = 0; i < parts.length - 2; i++) {
+        for (int i = 0; i < nameEndExclusive; i++) {
             if (i > 0) {
                 nameBuilder.append(" ");
             }
@@ -162,7 +203,7 @@ public class CommandHandler {
         BigDecimal amount = parseAmount(amountString);
         Category category = Category.fromString(categoryString);
 
-        return new AddArguments(name, amount, category);
+        return new AddArguments(name, amount, category, recurring);
     }
     /**
      * Deletes an expense entry from the {@link ExpenseList} by 1-based index.
@@ -205,6 +246,61 @@ public class CommandHandler {
             ui.printLine(e.getMessage());
         }
     }
+    /**
+     * Handles the deletion of a recurring expense based on user input.
+     *
+     * <p>Expected input format:
+     * {@code deleterecurring <index>}</p>
+     *
+     * <p>This method parses the index provided by the user, validates it against the
+     * {@link RecurringExpenseList}, and removes the corresponding recurring expense.</p>
+     *
+     * <p>Upon successful deletion:
+     * <ul>
+     *     <li>The recurring expense is removed from the list.</li>
+     *     <li>The total recurring expenditure is updated accordingly.</li>
+     *     <li>A confirmation message is displayed to the user.</li>
+     * </ul>
+     *
+     * <p>If the input format is invalid or the index is out of bounds, an appropriate
+     * error message is shown to the user.</p>
+     *
+     * @param userInput Full user input string starting with {@code deleterecurring}.
+     *                  Must not be {@code null} and must start with {@code deleterecurring}.
+     */
+    public void handleDeleteRecurring(String userInput) {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("deleterecurring") : "Input should start with 'deleterecurring'";
+
+        try {
+            String rest = userInput.substring("deleterecurring".length()).trim();
+
+            if (rest.isEmpty()) {
+                throw new InvalidIndexException("Format: deleterecurring <index>\n");
+            }
+
+            int index = Parser.parseIndex(rest);
+
+            if (!recurringExpenseList.isValidIndex(index)) {
+                throw new InvalidIndexException("Invalid recurring expense index!\n");
+            }
+
+            BigDecimal oldTotal = recurringExpenseList.getTotal();
+            RecurringExpense removed = recurringExpenseList.delete(index);
+
+            assert removed != null : "Deleted recurring expense should not be null";
+            assert recurringExpenseList.getTotal().compareTo(oldTotal.subtract(removed.getAmount())) == 0
+                    : "Recurring expense total should decrease by removed amount";
+
+            ui.printLine("Deleted recurring expense #" + index + ": " + removed);
+            ui.printLine("Recurring Total: $" + recurringExpenseList.getTotal());
+            ui.printLine("");
+
+        } catch (InvalidIndexException e) {
+            ui.printLine(e.getMessage());
+            ui.printLine("");
+        }
+    }
 
     /**
      * Clears all expenses from the {@link ExpenseList} after user confirmation.
@@ -219,16 +315,15 @@ public class CommandHandler {
     public void handleClear(Scanner in) {
         assert in != null : "Scanner should not be null";
 
-        ui.printLine("WARNING: This will permanently delete ALL expenses. Are you sure? (Input Y to clear)");
+        ui.printLine("WARNING: This will permanently delete ALL one-off expenses. Are you sure? (Input Y to clear)");
         String response = in.nextLine().trim().toLowerCase();
 
         if (response.equals("y")) {
             expenseList.clear();
 
             // Log at INFO: clearing all expenses is a significant application event
-            logger.info("handleClear executed | all expenses cleared by user confirmation");
-
-            ui.printLine("Expense list has been wiped clean. Fresh start!");
+            logger.info("handleClear executed | all one-off expenses cleared by user confirmation");
+            ui.printLine("Current month's one-off expenses have been wiped clean. Recurring expenses are kept.");
             ui.printLine("");
         } else {
             // Log at INFO: user chose not to clear — still worth recording the decision
@@ -340,7 +435,7 @@ public class CommandHandler {
 
         // Log at INFO: summary generation is a deliberate user-initiated action
         logger.info("handleSummary executed | generating BTO readiness report");
-        ui.showSummaryReport(new SummaryReport(profile, expenseList));
+        ui.showSummaryReport(new SummaryReport(profile, expenseList, recurringExpenseList));
     }
 
     /**
@@ -363,7 +458,7 @@ public class CommandHandler {
 
             // 2. Overwrite the save file with the empty data
             try {
-                storage.save(profile, expenseList);
+                storage.save(profile, expenseList, recurringExpenseList);
 
                 // Log at INFO: full system reset is the most significant application event
                 logger.info("handleReset executed | profile and expenses cleared, save file overwritten");
@@ -499,5 +594,75 @@ public class CommandHandler {
             ui.printLine("");
             break;
         }
+    }
+
+    /**
+     * Handles the 'save' command to archive current month's expenses and advance to next month.
+     *
+     * <p>This method:
+     * <ul>
+     *   <li>Archives the current month's expenses to a file (Month{N})</li>
+     *   <li>Calculates unspent allowance: monthlyAllowance - currentMonthExpenses</li>
+     *   <li>Transfers unspent amount to savings</li>
+     *   <li>Clears the monthly expense list for the next month</li>
+     *   <li>Increments the month counter</li>
+     * </ul>
+     * </p>
+     */
+    public void handleSaveMonth() {
+
+        int currentMonth = profile.getCurrentMonth();
+        BigDecimal monthlyExpenses = expenseList.getTotal();
+        BigDecimal monthlyAllowance = profile.getMonthlyAllowance();
+        BigDecimal unspentAmount = monthlyAllowance.subtract(monthlyExpenses);
+
+        logger.info("handleSaveMonth start | month=" + currentMonth
+                + " | monthlyAllowance=" + monthlyAllowance
+                + " | monthlyExpenses=" + monthlyExpenses
+                + " | unspentAmount=" + unspentAmount);
+
+        // Archive current month's expenses
+        try {
+            MonthlyArchive archive = new MonthlyArchive(".");
+            archive.saveMonthlyExpenses(currentMonth, expenseList);
+            logger.info("Month " + currentMonth + " expenses archived successfully");
+            ui.printLine("Month " + currentMonth + " expenses archived to 'monthly_archives'");
+        } catch (IOException e) {
+            logger.log(java.util.logging.Level.SEVERE,
+                    "Failed to archive Month " + currentMonth + " expenses", e);
+            ui.printLine("Error: Could not archive expenses for Month " + currentMonth);
+            ui.printLine("");
+            return;
+        }
+
+        // Transfer unspent allowance to savings
+        if (unspentAmount.compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal newSavings = profile.getCurrentSavings().add(unspentAmount);
+            profile.setCurrentSavings(newSavings);
+            logger.info("Transferred unspent amount to savings | amount=" + unspentAmount
+                    + " | newSavings=" + newSavings);
+            ui.printLine("Transferred $" + InputUtil.formatMoney(unspentAmount) + " of unspent "
+                    + "allowance to savings");
+        } else if (unspentAmount.compareTo(BigDecimal.ZERO) < 0) {
+            logger.info("Overspent this month | deficit=" + unspentAmount.negate());
+            ui.printLine("You overspent by $" + InputUtil.formatMoney(unspentAmount.negate()));
+        } else {
+            logger.info("No unspent allowance this month");
+            ui.printLine("You spent exactly your monthly allowance");
+        }
+
+        // Clear expense list for next month
+        expenseList.clear();
+        logger.info("Expense list cleared for next month");
+
+        // Advance to next month
+        profile.advanceMonth();
+        int nextMonth = profile.getCurrentMonth();
+        logger.info("Advanced to next month | currentMonth=" + nextMonth);
+
+        ui.printLine("Advanced to Month " + nextMonth);
+        ui.printLine("Current Savings: $" + InputUtil.formatMoney(profile.getCurrentSavings()));
+        ui.printLine("Monthly Allowance: $" + InputUtil.formatMoney(monthlyAllowance));
+        ui.printLine("");
     }
 }
