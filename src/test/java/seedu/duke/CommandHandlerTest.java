@@ -437,7 +437,7 @@ class CommandHandlerTest {
     }
 
     @Test
-    void handleRatio_withHousePriceSet_recalculatesBtoGoal_fullShare() {
+    void handleRatio_withHousePriceSet_fullShare() {
         profile.setHousePrice(new BigDecimal("400000"));
         Scanner in = new Scanner(new ByteArrayInputStream("1.0\n".getBytes()));
         ch.handleRatio(in);
