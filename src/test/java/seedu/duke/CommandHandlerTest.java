@@ -318,9 +318,10 @@ class CommandHandlerTest {
         assertEquals(new BigDecimal("1.0"), profile.getContributionRatio());
     }
 
-    // ── handleSavings ───────────────────────────────────────────────────────────
+    /**
+     * Unit tests for handleSavings.
+     */
 
-    @Test
     void handleSavings_zeroDeposit_savingsUnchanged() {
         profile.setCurrentSavings(new BigDecimal("1000.00"));
         Scanner in = new Scanner(new ByteArrayInputStream("0\n".getBytes()));
@@ -362,7 +363,9 @@ class CommandHandlerTest {
         assertEquals(new BigDecimal("175.00"), profile.getCurrentSavings());
     }
 
-    // ── handleAllowance ─────────────────────────────────────────────────────────
+    /**
+     * Unit tests for handleAllowance.
+     */
 
     @Test
     void handleAllowance_zeroAllowance_updatesProfile() {
@@ -402,7 +405,9 @@ class CommandHandlerTest {
         assertEquals(new BigDecimal("1000.55"), profile.getMonthlyAllowance());
     }
 
-    // ── handleRatio (additional) ─────────────────────────────────────────────────
+    /**
+     * Unit tests for handleRatio.
+     */
 
     @Test
     void handleRatio_twoDecimalPlaces_updatesProfile() {
@@ -437,8 +442,6 @@ class CommandHandlerTest {
 
     @Test
     void handleRatio_withHousePriceSet_recalculatesBtoGoal() {
-        // housePrice=400000, ratio=0.5 → downpayment=10000, legalFees=11000,
-        // totalDownpayment=21000.00, yourShare=10500.00
         profile.setHousePrice(new BigDecimal("400000"));
         Scanner in = new Scanner(new ByteArrayInputStream("0.5\n".getBytes()));
         ch.handleRatio(in);
@@ -447,7 +450,6 @@ class CommandHandlerTest {
 
     @Test
     void handleRatio_withHousePriceSet_fullShare_recalculatesBtoGoal() {
-        // ratio=1.0 → yourShare = totalDownpayment = 21000.00
         profile.setHousePrice(new BigDecimal("400000"));
         Scanner in = new Scanner(new ByteArrayInputStream("1.0\n".getBytes()));
         ch.handleRatio(in);

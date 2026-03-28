@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+//@@author Jairusljr
 public class SummaryReportTest {
     @Test
     public void summaryReport_correctValues() {

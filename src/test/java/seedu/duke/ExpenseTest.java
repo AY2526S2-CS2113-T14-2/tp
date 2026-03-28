@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import seedu.duke.data.Expense;
 import seedu.duke.category.Category;
 
+//@@author Jairusljr
 /**
  * Unit tests for {@link Expense}, verifying that fields are stored
  * correctly and that {@link Expense#toString()} formats as expected.
