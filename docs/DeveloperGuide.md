@@ -29,27 +29,28 @@ An individual BTO budget planner for university students planning to apply for B
 
 
 ## 4.3 User Stories
-| Version | As a ...       | I want to ... | So that I can ...                                                                               |
-|---------|----------------|---------|-------------------------------------------------------------------------------------------------|
-| v1.0    | New User       |Add regular expenses| Track all costs that might slow down my progress toward my goals                                |
-| v1.0    | New User       |Add my salary| Visualize my spending proportions relative to my total income.                                  |
-| v1.0    | New User       |Add my savings| Track my current liquid assets compared to my target goal                                       |
-| v1.0    | New User       |Add ratio of downpayment| Establish a concrete savings goal to pay my share of my future home                             |
-| v1.0    | New User       |Add downpayment price| Adjust the downpayment to its actual value for accuracy, since BTO flats are priced differently |
-| v1.0    | New User       |Delete entries|Update my list to only show relevant expenditures|
-| v1.0    | New User       |Edit entries|Correct input errors or update my salary to reflect my current financial status.|
-| v1.0    | New User       |View a financial summary|Visualize my progress toward the downpayment goal in one glance.|
-| v2.0    | New User       |Categorize expenses|Identify which spending categories occupy the largest portion of my budget.|
-| v1.0    | New User       |View "Distance to Goal" metrics|Stay motivated by seeing exactly how close I am to reaching my downpayment target.|
-| v1.0    | New User       |View salary and savings|Know how much I am saving relative to my salary|
-| v1.0    | New User       |Have a help command|Easily use the app's commands|
-| v2.0    | Regular User   |Add recurring monthly expenses|Never be blindsided by "hidden" or automated costs that occur every month.|
-| v2.0    | Regular User   |Add comments to expenses|Provide context for specific spending habits to better understand my financial behavior later.|
-| v1.0    | Regular User   |Set a specific target date for my goal|Know the monthly savings rate to meet my dateline|
-| v1.0    | Regular User |Sort expenditure from highest to lowest|Know which expenditures are hindering me from paying my share of the downpayment goal|
-| v2.0    | Long Term User  |Archive financial phases monthly|Keep my current dashboard uncluttered while preserving historical data that can be exported.|
-| v2.0    | Long Term User |Assign a financial readiness level|Know how ready I am to pay off my share of the downpayment|
-| v1.0    | Long Term User   |Have a local database|View all past inputs and historical data |
+
+| Version | As a ...       | I want to ...                        | So that I can ...                                                                 |
+|---------|----------------|--------------------------------------|-----------------------------------------------------------------------------------|
+| v1.0    | New User       | Add regular expenses                 | Track all costs that might slow down my progress toward my goals                  |
+| v1.0    | New User       | Add my salary                        | Visualize my spending proportions relative to my total income                     |
+| v1.0    | New User       | Add my savings                       | Track my current liquid assets compared to my target goal                         |
+| v1.0    | New User       | Add ratio of downpayment             | Establish a concrete savings goal to pay my share of my future home               |
+| v1.0    | New User       | Add downpayment price                | Adjust the downpayment to its actual value, since BTO flats are priced differently|
+| v1.0    | New User       | Delete entries                       | Update my list to only show relevant expenditures                                 |
+| v1.0    | New User       | Edit entries                         | Correct input errors or update my salary to reflect my current financial status   |
+| v1.0    | New User       | View a financial summary             | Visualize my progress toward the downpayment goal in one glance                   |
+| v2.0    | New User       | Categorize expenses                  | Identify which spending categories occupy the largest portion of my budget        |
+| v1.0    | New User       | View "Distance to Goal" metrics      | Stay motivated by seeing exactly how close I am to reaching my downpayment target |
+| v1.0    | New User       | View salary and savings              | Know how much I am saving relative to my salary                                   |
+| v1.0    | New User       | Have a help command                  | Easily use the app's commands                                                     |
+| v2.0    | Regular User   | Add recurring monthly expenses       | Never be blindsided by hidden or automated costs that occur every month           |
+| v2.0    | Regular User   | Add comments to expenses             | Provide context for specific spending habits to better understand them later      |
+| v1.0    | Regular User   | Set a specific target date           | Know the monthly savings rate needed to meet my deadline                          |
+| v1.0    | Regular User   | Sort expenditure from highest to lowest | Know which expenditures are hindering me from reaching my downpayment goal     |
+| v2.0    | Long Term User | Archive financial phases monthly     | Keep my dashboard uncluttered while preserving historical data                    |
+| v2.0    | Long Term User | Assign a financial readiness level   | Know how ready I am to pay off my share of the downpayment                        |
+| v1.0    | Long Term User | Have a local database                | View all past inputs and historical data                                          |
 
 
 ## 5 Non-Functional Requirements
