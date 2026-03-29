@@ -127,6 +127,15 @@ public class FinTrackPro {
         String userInput = ui.readLine(in, "");
         while (!userInput.equalsIgnoreCase("bye")) {
             handleCommand(userInput, in);
+
+            try {
+                storage.save(profile, expenseList, recurringExpenseList);
+                logger.fine("Auto-save successful after command: " + userInput);
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Auto-save failed!", e);
+                ui.printLine("Warning: Data could not be saved to disk.");
+            }
+
             userInput = ui.readLine(in, "");
         }
         logState("run.command-loop.exit", "persist in-memory data", "exitCommand=bye");
