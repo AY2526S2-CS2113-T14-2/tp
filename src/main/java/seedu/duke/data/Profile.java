@@ -185,6 +185,17 @@ public class Profile {
     }
 
     /**
+     * Sets the current month number.
+     * This is primarily used by the Storage class to restore the user's progress.
+     *
+     * @param currentMonth The month number to set.
+     */
+    public void setCurrentMonth(int currentMonth) {
+        assert currentMonth >= 1 : "Month must be at least 1";
+        this.currentMonth = currentMonth;
+    }
+
+    /**
      * Advances to the next month.
      * Increments the current month counter by 1.
      */
