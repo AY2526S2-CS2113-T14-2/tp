@@ -133,6 +133,34 @@ illustrate how each main component of FinTrackPro integrates with the rest of th
 ### Category component
 ![Class Diagram](diagram/Category-UML-Diagram.png)
 
+### Archive Expenses 
+#### Class Diagram
+![Class Diagram](diagram/ArchiveExpense-ClassDiagram.jpg)
+The above class diagram illustrates the design of the month archiving feature and the classes that directly participate
+in it. 
+
+CommandHandler triggers the archival through the `save` command, while FinTrackPro retrieves archived records during `list` display.
+Both classes depend on MonthlyArchive as the archive service class. 
+
+MonthlyArchive is responsible for persisting and loading monthly archive data, and it produces ArchivedExpense objects when archived
+entries are read back from storage. 
+
+For data sources, MonthlyArchive reads from both ExpenseList and RecurringExpenseList, accessing individual Expense and RecurringExpense
+items. All archived entries are represented uniformly as ArchivedExpense, so listing logic can display historical records through a consistent
+format.
+
+#### Sequence Diagram
+![Sequence Diagram](diagram/ArchiveExpense-SequenceDiagram.jpg)
+The ArchiveExpense sequence diagram illustrates two runtime flows: saving a month and displaying archived history. 
+
+In the save flow, the user enters the `save` command, and CommandHandler creates and uses MonthlyArchive, and invokes monthly save logic. MonthlyArchive
+iterates through current one-time and recurring expense collections, then writes archive rows into the month's archive file (MonthN).
+
+After successful persistence, control returns to CommandHandler, which continue month advancement and post-save updates. 
+
+In the list flow, the user enters `list`, and FinTrackPro requests archive data from MonthlyArchive for previous months. MonthlyArchive
+reads each MonthN file and reconstructs rows as List<ArchivedExpense>. FinTrackPro then iterates through these archived entries (name, amount, category)
+to print month-grouped history and totals.
 
 # 4 Product Scope
 
