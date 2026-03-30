@@ -16,6 +16,7 @@ strategies employed in the development of FinTrackPro.
 * **3. [Design & Implementation](#3-design--implementation)**
   * **3.1 [Architecture Diagram](#31-architecture-diagram)**
   * **3.2 [UML Diagrams](#32-uml-diagrams)**
+    * **3.2.1 [Managing Profile](#managing-profile)**
 * **4. [Product Scope](#4-product-scope)**
   * **4.1 [Target user profile](#41-target-user-profile)**
   * **4.2 [Value proposition](#42-value-proposition)**
@@ -229,6 +230,57 @@ In the list flow, the user enters `list`, and FinTrackPro requests archive data 
 reads each MonthN file and reconstructs rows as List<ArchivedExpense>. FinTrackPro then iterates through these archived entries (name, amount, category)
 to print month-grouped history and totals.
 
+### Managing Profile
+
+The `Profile` class is the central data object for the user's financial identity. It stores the name,
+monthly allowance, current savings, BTO goal, contribution ratio, and target deadline. All other
+components — `CommandHandler`, `SummaryReport`, `BtoCalculator` — read from or write to it by reference.
+
+#### Initial Setup Flow
+
+When the application detects that no BTO goal has been set (i.e. the user is new), `FinTrackPro`
+runs `performInitialSetup()` before entering the command loop. The steps are:
+
+1. The user is prompted for their **name**.
+2. The user provides their **current savings** and **monthly allowance** (validated by `InputUtil.readMoney()`).
+3. The user provides the **total house price** and their **contribution ratio** (0.0–1.0, validated by `InputUtil.readRatio()`).
+4. `BtoCalculator` computes the **total downpayment** (2.5% of house price + 10% legal fees) and the
+   user's **personal share** (total downpayment × ratio). This value is stored in `Profile` as `btoGoal`.
+5. The user provides a **future deadline** (ISO `YYYY-MM-DD`, validated by `InputUtil.readFutureDate()`).
+6. The app displays the time remaining and the required monthly savings rate needed to meet the goal.
+
+On subsequent launches, the saved profile is loaded from `fintrack.txt` and setup is skipped.
+
+#### Runtime Profile Updates
+
+Three commands allow the user to update their profile after initial setup:
+
+| Command     | Handler             | Effect                                                                                          |
+|-------------|---------------------|-------------------------------------------------------------------------------------------------|
+| `allowance` | `handleAllowance()` | Replaces the stored monthly allowance with the new value entered by the user.                   |
+| `savings`   | `handleSavings()`   | Adds the entered amount to the current savings total (deposit, not replacement).                |
+| `ratio`     | `handleRatio()`     | Replaces the contribution ratio; automatically recalculates `btoGoal` if `housePrice` is set.  |
+
+All three handlers use `InputUtil.readMoney()` or `InputUtil.readRatio()` to enforce valid input,
+re-prompting the user on invalid entries rather than throwing an exception to the caller.
+
+#### BTO Summary Report (`summary` command)
+
+`handleSummary()` instantiates a `SummaryReport` from the current `Profile`, `ExpenseList`, and
+`RecurringExpenseList`. The report derives the following metrics at construction time:
+
+| Metric                   | Formula                                                                            |
+|--------------------------|------------------------------------------------------------------------------------|
+| Distance to goal         | `btoGoal − currentSavings`                                                         |
+| Monthly surplus          | `monthlyAllowance − (oneOffExpenses + recurringExpenses)`                          |
+| Percentage progress      | `(currentSavings / btoGoal) × 100`, capped at 100%                                |
+| Estimated months         | `distanceToGoal ÷ monthlySurplus` (only shown when surplus > 0 and goal not met)  |
+| Monthly required savings | `distanceToGoal ÷ monthsUntilDeadline`                                             |
+| Readiness level          | Mapped from percentage: ≥100% → Ready, ≥75% → Secure, ≥50% → On Track, ≥25% → Making Progress, else → Barely Started |
+
+The computed report is passed to `Ui.showSummaryReport()` for display. No data in `Profile` or
+`ExpenseList` is mutated by this command.
+
 # 4 Product Scope
 
 ## 4.1 Target user profile
@@ -338,7 +390,39 @@ An individual BTO budget planner for university students planning to apply for B
 ---
 
 ### Managing profile
-(to be added by Adam)
+
+1. **Updating monthly allowance**
+   1. Prerequisites: Application started and profile initialised.
+   2. Test case: Enter `allowance`, then enter `2000`. Expected: Allowance updated to $2,000.00 and confirmed.
+   3. Test case: Enter `allowance`, then enter `0`. Expected: Allowance set to $0.00 with no error.
+   4. Test case: Enter `allowance`, then enter `-100`. Expected: Error shown for negative value, user re-prompted.
+   5. Test case: Enter `allowance`, then enter `abc`. Expected: Error shown for non-numeric input, user re-prompted.
+   6. Test case: Enter `allowance`, then enter `100.123`. Expected: Error shown for more than 2 decimal places, user re-prompted.
+
+2. **Adding to savings**
+   1. Prerequisites: Application started and profile initialised.
+   2. Test case: Enter `savings`, then enter `500`. Expected: $500.00 added to existing savings; new total displayed.
+   3. Test case: Enter `savings`, then enter `0`. Expected: $0.00 added; savings total unchanged.
+   4. Test case: Enter `savings`, then enter `-50`. Expected: Error shown for negative value, user re-prompted.
+   5. Test case: Enter `savings`, then enter `abc`. Expected: Error shown for non-numeric input, user re-prompted.
+   6. Test case: Enter `savings`, then enter `100.999`. Expected: Error shown for more than 2 decimal places, user re-prompted.
+
+3. **Updating contribution ratio**
+   1. Prerequisites: Application started and house price set during initial setup.
+   2. Test case: Enter `ratio`, then enter `0.5`. Expected: Ratio set to 0.5; BTO goal recalculated and confirmed.
+   3. Test case: Enter `ratio`, then enter `0.0` or `1.0`. Expected: Boundary values accepted; BTO goal recalculated.
+   4. Test case: Enter `ratio`, then enter `1.5`. Expected: Error shown for value above 1.0, user re-prompted.
+   5. Test case: Enter `ratio`, then enter `-0.1`. Expected: Error shown for negative value, user re-prompted.
+   6. Test case: Enter `ratio`, then enter `abc`. Expected: Error shown for non-numeric input, user re-prompted.
+   7. Test case: Enter `ratio`, then enter `0.123`. Expected: Error shown for more than 2 decimal places, user re-prompted.
+
+4. **Viewing BTO Summary (`summary`)**
+   1. Prerequisites: Profile initialised with allowance, savings, BTO goal, and deadline all set.
+   2. Test case: Enter `summary` with current month expenses below monthly allowance. Expected: Summary shows positive monthly surplus and an estimated number of months to goal.
+   3. Test case: Enter `summary` after savings meet or exceed BTO goal. Expected: Summary shows 100% progress and a "goal achieved" message; no months estimate shown.
+   4. Test case: Enter `summary` when total expenses exceed monthly allowance. Expected: Summary shows negative surplus; a warning is shown instead of a months estimate.
+   5. Test case: Enter `summary` with no expenses recorded yet. Expected: Summary shows full BTO goal as distance-to-goal and the full monthly allowance as surplus.
+
 ---
 
 ### Reset and clear
