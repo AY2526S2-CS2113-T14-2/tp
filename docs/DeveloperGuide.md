@@ -236,6 +236,21 @@ The `Profile` class is the central data object for the user's financial identity
 monthly allowance, current savings, BTO goal, contribution ratio, and target deadline. All other
 components — `CommandHandler`, `SummaryReport`, `BtoCalculator` — read from or write to it by reference.
 
+#### BtoCalculator
+
+`BtoCalculator` encodes the HDB downpayment rules as a reusable calculation. Given a house price
+and contribution ratio, it computes two values at construction time:
+
+| Field              | Formula                                                        |
+|--------------------|----------------------------------------------------------------|
+| `totalDownpayment` | `housePrice × 0.025` (2.5% HDB downpayment) + 10% legal fees |
+| `yourShare`        | `totalDownpayment × contributionRatio`                         |
+
+Both values are rounded to 2 decimal places (HALF_UP). `yourShare` is stored in `Profile` as the
+user's `btoGoal` and is the target all savings progress is measured against. Calling
+`setContributionRatio()` on a `Profile` that already has a `housePrice` will silently re-run this
+calculation and update `btoGoal` in place.
+
 #### Initial Setup Flow
 
 When the application detects that no BTO goal has been set (i.e. the user is new), `FinTrackPro`
