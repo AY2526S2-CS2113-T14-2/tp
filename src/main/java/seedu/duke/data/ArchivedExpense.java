@@ -24,7 +24,7 @@ public class ArchivedExpense {
         this.name = name;
         this.amount = amount;
         this.category = category;
-        this.Recurring = isRecurring;
+        this.isRecurring = isRecurring;
     }
 
     /**
