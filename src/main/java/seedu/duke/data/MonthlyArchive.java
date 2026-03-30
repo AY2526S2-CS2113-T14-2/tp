@@ -53,15 +53,23 @@ public class MonthlyArchive {
     /**
      * Saves the expenses for a given month to a dedicated file.
      *
-     * <p>File format: One expense per line as "name | amount | category"</p>
+     * <p>File format:
+     * <ul>
+     *    <li>One-off expense: {@code E | name | amount | category}</li>
+     *    <li>Recurring expense: {@code R | name | amount | category}</li>
+     *  </ul>
+     *  </p>
      *
      * @param monthNumber The month number (1-indexed).
      * @param expenseList The list of expenses to archive.
      * @throws IOException If there is an error writing to the file.
      */
-    public void saveMonthlyExpenses(int monthNumber, ExpenseList expenseList) throws IOException {
+    public void saveMonthlyExpenses(int monthNumber, ExpenseList expenseList,
+                                    RecurringExpenseList recurringExpenseList) throws IOException {
         assert monthNumber > 0 : "Month number must be positive";
         assert expenseList != null : "Expense list cannot be null";
+        assert recurringExpenseList != null : "Recurring expense list cannot be null";
+
 
         File monthFile = getMonthFile(monthNumber);
         logger.log(Level.INFO, "Archiving Month " + monthNumber + " expenses to: " + monthFile.getAbsolutePath());
@@ -69,13 +77,21 @@ public class MonthlyArchive {
         try (FileWriter fw = new FileWriter(monthFile)) {
             for (int i = 0; i < expenseList.size(); i++) {
                 Expense e = expenseList.get(i);
-                fw.write(String.format("%s | %s | %s%n",
+                fw.write(String.format("E | %s | %s | %s%n",
                         e.getName(),
                         e.getAmount(),
                         e.getCategory()));
             }
+            for (int i = 0; i < recurringExpenseList.size(); i++) {
+                RecurringExpense recurringExpense = recurringExpenseList.get(i);
+                fw.write(String.format("R | %s | %s | %s%n",
+                        recurringExpense.getName(),
+                        recurringExpense.getAmount(),
+                        recurringExpense.getCategory()));
+            }
             logger.log(Level.INFO, "Month " + monthNumber + " archived successfully with "
-                    + expenseList.size() + " expenses");
+                    + expenseList.size() + "one-off expenses and "
+                    + recurringExpenseList.size() + " recurring expenses");
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to archive Month " + monthNumber, e);
             throw e;
@@ -109,12 +125,26 @@ public class MonthlyArchive {
                 }
 
                 String[] parts = line.split("\\s*\\|\\s*");
-                if (parts.length < 3) {
+                if (parts.length < 4) {
                     logger.log(Level.WARNING, "Skipping malformed archived expense line: " + line);
                     continue;
                 }
+                String recordType = parts[0];
+                String name = parts[1];
+                String amount = parts[2];
+                String category = parts[3];
 
-                archivedExpenses.add(new ArchivedExpense(parts[0], parts[1], parts[2]));
+                boolean isRecurring;
+                if (recordType.equals("E")) {
+                    isRecurring = false;
+                } else if (recordType.equals("R")) {
+                    isRecurring = true;
+                } else {
+                    logger.log(Level.WARNING, "Skipping unknown archived expense type: " + line);
+                    continue;
+                }
+
+                archivedExpenses.add(new ArchivedExpense(name, amount, category, isRecurring));
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to load archived expenses for Month " + monthNumber, e);

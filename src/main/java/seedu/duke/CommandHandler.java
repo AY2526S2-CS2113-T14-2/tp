@@ -610,19 +610,21 @@ public class CommandHandler {
     public void handleSaveMonth() {
 
         int currentMonth = profile.getCurrentMonth();
-        BigDecimal monthlyExpenses = expenseList.getTotal();
+        BigDecimal monthlyExpenses = expenseList.getTotal().add(recurringExpenseList.getTotal());
         BigDecimal monthlyAllowance = profile.getMonthlyAllowance();
         BigDecimal unspentAmount = monthlyAllowance.subtract(monthlyExpenses);
 
         logger.info("handleSaveMonth start | month=" + currentMonth
                 + " | monthlyAllowance=" + monthlyAllowance
+                + " | oneOffExpenses=" + expenseList.getTotal()
+                + " | recurringExpenses=" + recurringExpenseList.getTotal()
                 + " | monthlyExpenses=" + monthlyExpenses
                 + " | unspentAmount=" + unspentAmount);
 
         // Archive current month's expenses
         try {
             MonthlyArchive archive = new MonthlyArchive(".");
-            archive.saveMonthlyExpenses(currentMonth, expenseList);
+            archive.saveMonthlyExpenses(currentMonth, expenseList, recurringExpenseList);
             logger.info("Month " + currentMonth + " expenses archived successfully");
             ui.printLine("Month " + currentMonth + " expenses archived to 'monthly_archives'");
         } catch (IOException e) {

@@ -129,7 +129,74 @@ The sections below give more concrete details about each component.
 ## 3.2 UML Diagrams
 In this section, we will present the UML class diagrams, object diagrams and sequence diagrams to 
 illustrate how each main component of FinTrackPro integrates with the rest of the codebase.
+### Managing Expenses 
+#### Class Diagram
+![Class Diagram](diagram/Expense-ClassDiagram.png)
+Tha above class diagram illustrates the overall design of the expense management system and the classes that directly participate 
+in handling user commands and managing expense data.
 
+FinTrackPro serves as the main controller of the application. It coordinates bewteen the user interface(Ui), the command
+processing component (CommandHandler), and the data storage structures (ExpenseList and RecurringExpenseList). It receives
+user input and delegates command execution accordingly
+
+CommandHandler is responsible for parsing and executing user commands such as adding, deleting, and sorting expenses. It 
+interacts with both ExpenseList and RecurringExpenseList to modify or retrieve data, and communicates results back to the user through the Ui.
+
+ExpenseList manages all one-off expenses. It stores multiple Expense objects and provides operations such as adding, deleting, 
+sorting, and calculating the total expenditure. Each Expense represents a single transaction with attributes such as name, 
+amount, category, and insertion order.
+
+RecurringExpenseList manages recurring expenses separately from one-off expenses. It stores multiple RecurringExpense objects 
+and provides similar operations such as adding, deleting, and computing total recurring expenditure.
+
+Both ExpenseList and RecurringExpenseList act as data source classes. They encapsulate collections of their respective expense 
+types and expose methods for manipulation and retrieval. The separation ensures that recurring and one-off expenses are 
+handled independently while still allowing the system to aggregate and display them together when needed.
+
+#### Sequence Diagram
+![Sequence Diagram](diagram/AddExpense-SequenceDiagram.png)
+The above sequence diagram illustrates how the system handles the add command for both one-off and recurring expenses.
+
+The interaction begins when the User enters an add command. This input is received by FinTrackPro, which invokes handleCommand 
+to determine the type of command entered. FinTrackPro then delegates the request to CommandHandler by calling handleAdd.
+
+Within CommandHandler, the user input is parsed by parseAddArguments, which extracts the expense name, amount, category, 
+and whether the recurring keyword is present.
+
+If the expense is a one-off expense, CommandHandler interacts with ExpenseList. It first retrieves the old total, then 
+adds the new expense into the list, retrieves the newly added Expense, and finally gets the updated total. The result is 
+then displayed to the user through the Ui.
+
+If the expense is marked as recurring, CommandHandler instead creates a RecurringExpense and adds it into RecurringExpenseList. 
+It then retrieves the updated recurring total and displays the result through the Ui.
+
+This sequence diagram shows that the system uses the same command entry point for both types of expenses, but routes them 
+to different data structures depending on whether the recurring flag is present.
+
+![Sequence Diagram](diagram/DeleteOneExpense-SequenceDiagram.png)
+The above sequence diagram illustrates how the system handles the deletion of a one-off expense.
+
+The interaction begins when the User enters the delete command. FinTrackPro receives the input and invokes handleCommand, 
+which identifies the command and delegates execution to CommandHandler through handleDelete.
+
+Within CommandHandler, the input index is first validated using parseDeleteIndex. Once the index is confirmed to be valid, 
+CommandHandler retrieves the current total expenditure from ExpenseList, deletes the selected Expense, and then retrieves 
+the updated total.
+
+Finally, CommandHandler uses the Ui to display confirmation that the expense has been deleted together with the updated 
+total expenditure.
+
+![Sequence Diagram](diagram/DeleteRecurringExpense-SequenceDiagram.png)
+The above sequence diagram illustrates how the system handles the deletion of a recurring expense.
+
+The interaction begins when the User enters the deleterecurring command. FinTrackPro receives the input and invokes 
+handleCommand, which dispatches the request to CommandHandler through handleDeleteRecurring.
+
+CommandHandler first checks whether the given index is valid against RecurringExpenseList. If valid, it retrieves the old 
+recurring total, removes the selected RecurringExpense, and then retrieves the updated recurring total.
+
+Finally, the result is shown to the user through the Ui, confirming the deletion of the recurring expense and displaying 
+the updated recurring total.
 ### Category component
 ![Class Diagram](diagram/Category-UML-Diagram.png)
 
@@ -233,9 +300,32 @@ An individual BTO budget planner for university students planning to apply for B
 
 ### Managing expenses
 (to be added by Kynaston)
-
----
-
+1. **Adding a one-off expense**
+   1. Prerequisites: Application started with a valid profile setup.
+   2. Test case: `add lunch 5 FOOD` Expected: Expense added to the one-off expense list. Total expenditure updated.
+   3. Test case: `add grab home 20` TRANSPORT Expected: Multi-word expense name added successfully under TRANSPORT.
+   4. Test case: `add` Expected: Error shown for missing arguments. No expense added.
+   5. Test case: `add lunch -1 FOOD` Expected: Error shown for negative amount. No expense added.
+   6. Test case: `add lunch abc FOOD` Expected: Error shown for invalid amount format. No expense added.
+   7. Test case: `add lunch 5 HELLO` Expected: Error shown for invalid category. No expense added.
+2. **Deleting a one-off expense**
+   1. Prerequisites: At least one expense exists in the list.
+   2. Test case: `delete 1` Expected: First expense removed. Total expenditure updated.
+   3. Test case: `delete 0` Expected: Error shown for invalid index. List unchanged.
+   4. Test case: `delete 99` Expected: Error shown for out-of-range index. List unchanged.
+   5. Test case: `delete abc` Expected: Error shown for invalid index format. List unchanged.
+3. **Adding a Recurring expense**
+   1. Prerequisites: Application started with a valid profile setup.
+   2. Test case: `add netflix 30 ENTERTAINMENT recurring` Expected: Recurring expense added to recurring expense list
+   3. Test case: `add phone bill 20 UTILITIES RECURRING` Expected: Recurring expense added successfully (case-insensitive keyword).
+   4. Test case: `add netflix -1 ENTERTAINMENT recurring` Expected: Error shown for invalid amount. No recurring expense added.
+   5. Test case: `add netflix 30 HELLO recurring` Expected: Error shown for invalid category. No recurring expense added.
+4. **Deleting a recurring Expense**
+   1. Prerequisites: At least one recurring expense exists.
+   2. Test case: `deleterecurring 1` Expected: First recurring expense removed.
+   3. Test case: `deleterecurring 0` Expected: Error shown for invalid index. List unchanged.
+   4. Test case: `deleterecurring 99` Expected: Error shown for out-of-range index. List unchanged.
+   5. Test case: `deleterecurring abc` Expected: Error shown for invalid index format. List unchanged.
 ### Sorting expenses
 
 1. **Sorting by category**
