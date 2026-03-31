@@ -185,6 +185,7 @@ This sequence diagram shows that the system uses the same command entry point fo
 to different data structures depending on whether the recurring flag is present.
 
 ![Sequence Diagram](diagram/DeleteOneExpense-SequenceDiagram.png)
+
 The above sequence diagram illustrates how the system handles the deletion of a one-off expense.
 
 The interaction begins when the User enters the delete command. FinTrackPro receives the input and invokes handleCommand, 
@@ -198,6 +199,7 @@ Finally, CommandHandler uses the Ui to display confirmation that the expense has
 total expenditure.
 
 ![Sequence Diagram](diagram/DeleteRecurringExpense-SequenceDiagram.png)
+
 The above sequence diagram illustrates how the system handles the deletion of a recurring expense.
 
 The interaction begins when the User enters the deleterecurring command. FinTrackPro receives the input and invokes 
@@ -208,8 +210,79 @@ recurring total, removes the selected RecurringExpense, and then retrieves the u
 
 Finally, the result is shown to the user through the Ui, confirming the deletion of the recurring expense and displaying 
 the updated recurring total.
+
+![Sequence Diagram](diagram/handleSort-SequenceDiagram.png)
+
+The above sequence diagram illustrates how the system routes the `sort` command to the
+appropriate sorting method based on the argument provided by the user.
+
+The interaction begins when the user enters a `sort` command. FinTrackPro receives the input
+and invokes handleCommand, which dispatches the request to CommandHandler through handleSort.
+
+CommandHandler extracts the argument following the `sort` keyword and evaluates it against
+three recognised values. If the argument is `category`, `sortByCategory` is called on
+ExpenseList. If the argument is `name`, `sortByName` is called. If the argument is `recent`,
+`sortByRecent` is called. Any unrecognised argument is rejected and an error message is
+displayed to the user through Ui without modifying the list.
+
+![Sequence Diagram](diagram/SortByCategory-SequenceDiagram.png)
+
+The above sequence diagram illustrates how the system sorts the expense list by category
+priority when `sort category` is entered.
+
+CommandHandler delegates to ExpenseList by calling sortByCategory. ExpenseList invokes
+Java's sort with a comparator based on each Expense's category. During the sort, each
+Expense's getCategory is called to retrieve its Category, and Category's compareTo is
+then called to determine relative ordering based on each category's fixed sort order
+(FOOD = 1, TRANSPORT = 2, ENTERTAINMENT = 3, UTILITIES = 4, OTHER = 5).
+
+The sort is stable, meaning expenses within the same category retain their relative
+insertion order. No data is mutated beyond the reordering of the internal list.
+
+![Sequence Diagram](diagram/SortByName-SequenceDiagram.png)
+
+The above sequence diagram illustrates how the system sorts the expense list
+alphabetically by expense name when `sort name` is entered.
+
+CommandHandler delegates to ExpenseList by calling sortByName. ExpenseList invokes
+Java's sort with a comparator that calls getName on each Expense and converts the
+result to lowercase before comparison. This ensures the sort is case-insensitive,
+so an expense named "Grab" and one named "grab" are treated as equal in ordering.
+
+The sort is stable, so expenses with identical lowercased names retain their relative
+insertion order. No data is mutated beyond the reordering of the internal list.
+
+![Sequence Diagram](diagram/SortByRecent-SequenceDiagram.png)
+
+The above sequence diagram illustrates how the system restores the expense list to its
+original insertion order when `sort recent` is entered.
+
+CommandHandler delegates to ExpenseList by calling sortByRecent. ExpenseList invokes
+Java's sort with a comparator that calls getInsertionOrder on each Expense. The
+insertion order is a zero-based integer stamped onto each Expense at the time it is
+created, preserving the sequence in which expenses were originally added regardless
+of any subsequent sorts.
+
+This means `sort recent` effectively undoes any prior `sort category` or `sort name`
+operation, restoring the list to the exact order the user originally entered their
+expenses. No data is mutated beyond the reordering of the internal list.
+
 ### Category component
 ![Class Diagram](diagram/Category-UML-Diagram.png)
+The above class diagram illustrates the design of the category classification system and the classes that directly
+participate in it.
+
+`CommandHandler` validates and resolves category strings through `Category.isValid` and `Category.fromString` before
+adding any expense, while `ExpenseList` depends on `Category` to perform sorting via `sortByCategory`.
+
+`Category` is an abstract class that defines the classification contract through two abstract methods: `getName` and
+`getSortOrder`. It also provides two static factory methods — `isValid` for pre-validation and `fromString` for
+instantiation — used by callers to safely resolve a string input into a concrete category instance.
+
+Each concrete subclass (`FoodCategory`, `TransportCategory`, `EntertainmentCategory`, `UtilitiesCategory`,
+`OtherCategory`) implements `getName` and `getSortOrder` with a fixed return value, defining both its display
+label and its position in the sorted expense list. `Category` implements `Comparable<Category>` so that standard
+Java sorting utilities can order expenses by category without any sorting logic in `ExpenseList` itself.
 
 ### Archive Expenses 
 #### Class Diagram
