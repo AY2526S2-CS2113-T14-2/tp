@@ -189,6 +189,18 @@ class CommandHandlerTest {
     }
 
     @Test
+    public void handleAdd_negativeAmount_showsSpecificMessage() {
+        CapturingUi testUi = new CapturingUi();
+        CommandHandler testHandler = new CommandHandler(testUi, new Profile(),
+                new ExpenseList(), new RecurringExpenseList(), new Storage("fintrack.txt"));
+
+        testHandler.handleAdd("add lunch -5.00 FOOD");
+
+        assertTrue(testUi.getLines().stream()
+                .anyMatch(line -> line.contains("You cannot add a negative expenditure! Try again!")));
+    }
+
+    @Test
     public void handleAdd_validCategory_addsExpense() {
         ch.handleAdd("add lunch 3.00 FOOD");
         ch.handleAdd("add bus fare 2.00 TRANSPORT");

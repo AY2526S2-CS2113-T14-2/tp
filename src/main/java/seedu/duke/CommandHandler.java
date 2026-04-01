@@ -205,6 +205,10 @@ public class CommandHandler {
                     "FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER\n");
         }
 
+        if (amountString.matches("-\\d+(\\.\\d+)?")) {
+            throw new InvalidAmountException("You cannot add a negative expenditure! Try again!\n");
+        }
+
         if (!amountString.matches("\\d+(\\.\\d+)?")) {
             throw new InvalidAmountException("Amount must be a plain number.\n");
         }
