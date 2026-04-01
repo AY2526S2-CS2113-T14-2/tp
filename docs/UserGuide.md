@@ -363,12 +363,12 @@ Watch this space for more updates!!
 | Exit Program              | `bye`                                                         |
 
 ### Daily Transaction Commands
-| Action                    | Format, Examples                             |
-|---------------------------|----------------------------------------------|
-| Add Expense               | `add <name> <amount> <category> [recurring]` |
-| List Entries              | `list`                                       |
-| Delete Entry              | `delete <index>` e.g. `delete 2`             |
-| Delete Recurring          | `deleterecurring <index>`                    |
+| Action                    | Format, Examples                                 |
+|---------------------------|--------------------------------------------------|
+| Add Expense               | `add <name> <amount> <category> [recurring]`     |
+| List Entries              | `list`                                           |
+| Delete Entry              | `delete <index>` e.g. `delete 2`                 |
+| Delete Recurring          | `deleterecurring <index>` eg `deleterecurring 1` |
 
 ### Other Commands
 | Action                    | Format, Examples                                                |
