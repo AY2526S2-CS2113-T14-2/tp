@@ -85,7 +85,7 @@ public class InputUtil {
         while (true) {
             String moneyString = ui.readLine(in, prompt).trim();
 
-            if (!moneyString.matches("\\d+(\\.\\d{1,2})?")) {
+            if (!moneyString.matches("-?\\d+(\\.\\d{1,2})?")) {
                 // Log at WARNING: user provided invalid format string which is rejected
                 logger.warning("readMoney unsuccessful | reason: invalid formatting");
                 ui.printLine("Bruh I need a valid amount like " +
@@ -94,6 +94,11 @@ public class InputUtil {
             }
 
             BigDecimal result = new BigDecimal(moneyString);
+            if (result.compareTo(BigDecimal.ZERO) < 0) {
+                logger.warning("readMoney unsuccessful | reason: negative amount");
+                ui.printLine("Negative amounts are not accepted. Please enter 0 or more.");
+                continue;
+            }
             assert result.compareTo(BigDecimal.ZERO) >= 0 : "readMoney: parsed amount must be non-negative";
             return result;
 
