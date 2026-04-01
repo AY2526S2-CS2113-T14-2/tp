@@ -464,10 +464,10 @@ R | Netflix | 10.90 | ENTERTAINMENT
 
 This snapshot illustrates three key design points:
 
-1. **Six mandatory Profile fields are restored** — name, allowance, savings, BTO goal, ratio, and
-   deadline are populated from the `P` line. The optional `currentMonth` field is restored if an 8th
-   segment is present (defaulting to `1` otherwise), and `housePrice` is restored if a 9th segment
-   is present and not `null`.
+1. **All Profile fields are restored** — all eight fields (name, allowance, savings, BTO goal, ratio,
+   deadline, `currentMonth`, `housePrice`) are written by the current save format and fully restored
+   on load. The checks for missing 8th and 9th segments exist only for backward compatibility with
+   save files produced by older versions of the application.
 2. **Insertion order is preserved** — `e1` has `insertionOrder = 0` and `e2` has
    `insertionOrder = 1`, meaning a subsequent `sort recent` command will restore this exact sequence.
 3. **Recurring and one-off expenses are held separately** — `expenseList` and `recurringList` are
@@ -532,10 +532,9 @@ The following sequence of actions occurs during the load process:
 3. For each line starting with `P`, **Storage** delegates to `loadProfile`, which invokes all six
    setters on **Profile**: `setName`, `setMonthlyAllowance`, `setCurrentSavings`, `setBtoGoal`,
    `setContributionRatio`, and `setDeadline`.
-4. If the line contains an 8th segment (`parts.length >= 8`), `profile.setCurrentMonth()` is also
-   called. Otherwise, the month counter remains at its default value of `1`. If a 9th segment is
-   present and not `"null"`, `profile.setHousePrice()` is called, restoring the value needed for
-   the `ratio` command to recalculate `btoGoal` after a restart.
+4. The 8th segment (`currentMonth`) and 9th segment (`housePrice`) are also loaded if present.
+   Both are always written by the current save format; the segment-presence checks exist only for
+   backward compatibility with save files from older versions of the application.
 5. For lines starting with `E`, **Storage** delegates to `loadExpense`, which calls `expenseList.add()`
    with the preserved insertion order, restoring the original sort sequence.
 6. For lines starting with `R`, **Storage** delegates to `loadRecurring`, which adds a new
