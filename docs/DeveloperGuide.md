@@ -40,7 +40,7 @@ strategies employed in the development of FinTrackPro.
 * **7. [Instructions For Manual Testing](#7-instructions-for-manual-testing)**
    * **7.1 [Test Cases](#71-test-cases)**
       * **7.1.1 [Managing Expenses](#managing-expenses-1)**
-      * **7.1.2 [Sorting Expenses](#sorting-expenses)**
+      * **7.1.2 [Sorting Expenses](#sorting-expenses-1)**
       * **7.1.3 [Managing Profile](#managing-profile-1)**
       * **7.1.4 [Reset and Clear](#reset-and-clear)**
       * **7.1.5 [Category Validation](#category-validation)**
@@ -62,7 +62,7 @@ strategies employed in the development of FinTrackPro.
 * **[SE-EDU Guides](https://se-education.org/guides/)**: We referred to the various guides provided by the SE-EDU team for best practices in software documentation and testing.
 * **[CS2113 Module Website](https://nus-cs2113-ay2526s2.github.io/website/)**: Special thanks to the professors and tutors of CS2113 for their guidance and feedback throughout the development lifecycle of v1.0 to v2.1.
 
-# 3 Design & Implementation
+# 3. Design & Implementation
 
 ## 3.1 Architecture Diagram
 
@@ -243,8 +243,8 @@ priority when `sort category` is entered.
 CommandHandler delegates to ExpenseList by calling sortByCategory. ExpenseList invokes
 Java's sort with a comparator based on each Expense's category. During the sort, each
 Expense's getCategory is called to retrieve its Category, and Category's compareTo is
-then called to determine relative ordering based on each category's based on each category's 
-fixed sort priority as defined in the concrete subclass
+then called to determine relative ordering based on each category's fixed sort priority
+as defined in the concrete subclass
 
 The sort is stable, meaning expenses within the same category retain their relative
 insertion order. No data is mutated beyond the reordering of the internal list.
@@ -559,7 +559,7 @@ via a clean interface, so this migration would require changes only within `Stor
 
 ---
 
-# 4 Product Scope
+# 4. Product Scope
 
 ## 4.1 Target user profile
 FinTrack Pro was created for individual students in a relationship who are planning to set aside finances for their share of a BTO downpayment.
@@ -593,7 +593,7 @@ An individual BTO budget planner for university students planning to apply for B
 | v1.0    | Long Term User | Have a local database                   | View all past inputs and historical data                                           |
 
 
-# 5 Non-Functional Requirements
+# 5. Non-Functional Requirements
 
 ##  5.1 Performance and scalability
 * Response Time: Any command should return a result within 200 milliseconds under normal operating conditions.
@@ -614,7 +614,7 @@ An individual BTO budget planner for university students planning to apply for B
 * Platform Independence: The application must be cross-platform, functioning identically on Windows, macOS, and Linux distributions, provided the system has Java 17 installed.
 * Zero Installation: The product should be delivered as a single, executable JAR file that requires no complex installation process or external database setup. 
 
-# 6 Glossary
+# 6. Glossary
 
 * *BTO (Build-To-Order)* - a subsidized public housing option scheme in Singapore where new flats are constructed only after a sufficient number of units (typically 65-70%) have been pre-booked by applicants
 * *Contribution ratio* - the user's fractional share of the downpayment (0.0 to 1.0)
@@ -622,7 +622,7 @@ An individual BTO budget planner for university students planning to apply for B
 * *Adjusted Minimum Savings* - minimum amount you need to save per month given your distance to goal and number of months remaining till the deadline 
 * *Estimated Goal Achievement* - number of months you need to take to achieve your goal, given the current month's savings and distance to goal
 
-# 7 Instructions for Manual Testing
+# 7. Instructions for Manual Testing
 Before running any test case, ensure you are starting from a clean state by deleting
 `fintrack.txt` and any files in the `monthly_archives/` folder if they exist. Launch
 the application with `java -jar FinTrackPro.jar` and complete the initial setup when
