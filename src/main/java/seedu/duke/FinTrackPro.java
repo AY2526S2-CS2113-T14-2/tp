@@ -121,7 +121,7 @@ public class FinTrackPro {
 
         ui.printLine("");
         ui.printLine("Type 'help' to view my currently supported commands!");
-        ui.printLine("Any non-command word would be echoed back to you you you");
+        ui.printLine("If you enter an unknown command, I'll prompt you to use 'help'.");
         ui.printLine("Type 'bye' to exit!");
         ui.printLine("");
 
@@ -314,13 +314,13 @@ public class FinTrackPro {
     }
 
     static boolean isExactCommandInput(String userInput, String command) {
-        return userInput != null && command != null && userInput.trim().equalsIgnoreCase(command);
+        return userInput != null && userInput.trim().equalsIgnoreCase(command);
     }
 
     /**
      * Parses and dispatches a single line of user input.
      *
-     * <p>If the input does not match a supported command, it is echoed back to the user.
+     * <p>If the input does not match a supported command, an error message is shown.
      * Empty/whitespace-only input is rejected.</p>
      *
      * @param userInput Raw line entered by the user.
@@ -407,8 +407,8 @@ public class FinTrackPro {
             handler.handleSaveMonth();
             break;
         default:
-            logger.warning("state=command.unknown | expected=echo input back to user | rawInput='" + userInput + "'");
-            ui.printLine("You said: " + userInput);
+            logger.warning("state=command.unknown | expected=show help hint to user | rawInput='" + userInput + "'");
+            ui.printLine("What is that command brooo? Type 'help' to know all of the commands and try again!");
             ui.printLine("");
             break;
         }
