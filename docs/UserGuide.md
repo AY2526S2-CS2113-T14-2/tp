@@ -14,7 +14,7 @@ Let's get started!
 2. Download the latest ```.jar``` file of FinTrackPro from [here](https://github.com/AY2526S2-CS2113-T14-2/tP/releases).
 3. Copy the file to the folder that you want to use as the home folder for FinTrackPro.
 4. Open Terminal(Mac) or Windows Powershell(Windows), ```cd``` into the folder you put the jar file in, and use the ```java -jar FinTrackPro.jar``` command to run the application. 
-5. You should see something an introduction page asking for your name. 
+5. You should see an introduction page asking for your name.
 6. Type the command in the command line and press Enter to execute it.
 7. You can refer to the [Features](#features-) page for details of each command. Have fun!!
 
@@ -175,8 +175,6 @@ Month 1 Total: $88.30
 
 Total Expenditure (All Months + Recurring): $118.30
 
-Total Expenditure (All Months + Recurring): $88.30
-
 > sort category
 Expenses sorted by category.
 > list
@@ -193,7 +191,7 @@ Month 1 Total: $88.30
 
 Total Expenditure (All Months + Recurring): $118.30
 ```
-<b>NOTE:</b> Sorting reorders the in-memory list immediately. Run `list` to see the updated order..
+<b>NOTE:</b> Sorting reorders the in-memory list immediately. Run `list` to see the updated order.
 
 ### Deleting an entry: ```delete```
 Deletes the specified entry from the tracker.<br>
@@ -205,9 +203,8 @@ Deletes the specified entry from the tracker.<br>
 Deleted expense #1: $30
 Current Total: $15.90
 ```
-<b>NOTE:</b>  
-- INDEX refers to the position in the current month’s expense list.  
-- Sorting reorders the in-memory list immediately. Run list to see the updated order.
+<b>NOTE:</b>
+- INDEX refers to the position in the current month’s expense list.
 
 ### Deleting a recurring entry: ```deleterecurring```
 Deletes a recurring expense from the tracker.<br>
@@ -215,8 +212,8 @@ Deletes a recurring expense from the tracker.<br>
 <b>Example of Usage:</b> ```deleterecurring 1```  
 <b>Expected Output:</b>
 ```
-Deleted recurring expense #1: netflix $30.00 [ENTERTAINMENT]
-Recurring Total: $0.00
+Deleted recurring expense #1: [RECURRING][ENTERTAINMENT] netflix $30
+Recurring Total: $0
 ```
 <b>NOTE:</b>  
 - INDEX refers to the position in the recurring expense list.  
@@ -274,7 +271,7 @@ Exits the program<br>
 <b>Example of Usage:</b> ```bye``` <br>
 <b>Expected Output:</b>
 ```
-Goodbye nicholas. Stay disciplined and get that house that you always wanted!
+Goodbye Jairus. Stay disciplined and get that house that you always wanted!
 ```
 
 ### Archive monthly expenditures: ```save```
