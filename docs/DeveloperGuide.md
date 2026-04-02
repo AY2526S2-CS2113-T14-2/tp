@@ -104,11 +104,11 @@ The app consists of the following main components:
     - Ensures no data loss through auto-save functionality after state-changing commands.
 
 6. **Categories**: A polymorphic system for expense classification.
-   - **Category**: An abstract base class defining the classification contract via `getName()`
-     and `getSortOrder()`, with two static factory methods (`isValid` and `fromString`) for
-     safe resolution of user input strings into category instances.
-   - **FoodCategory, TransportCategory, EntertainmentCategory, UtilitiesCategory, OtherCategory**:
-     Concrete subclasses each implementing a fixed display name and sort priority.
+    - **Category**: The abstract base class for classifying expenses into types like Food and Transport. This class
+      defines two shared methods: isValid and fromString. isValid checks whether the user typed a recognised category
+      name, and fromString converts that text into the matching category object.
+    - **FoodCategory, TransportCategory, EntertainmentCategory, UtilitiesCategory, OtherCategory**:
+    Subclasses each implementing a fixed display name and sort priority.
 
 7. **Utilities**: A collection of helper classes used by multiple components.
     - **BtoCalculator**: Performs financial calculations for BTO goal planning (savings needed, progress tracking).
@@ -286,41 +286,53 @@ participate in it.
 adding any expense, while `ExpenseList` depends on `Category` to perform sorting via `sortByCategory`.
 
 `Category` is an abstract class that defines the classification contract through two abstract methods: `getName` and
-`getSortOrder`. It also provides two static factory methods — `isValid` for pre-validation and `fromString` for
-instantiation — used by callers to safely resolve a string input into a concrete category instance.
+`getSortOrder`. It also provides two static methods: `isValid` for category validation and `fromString` for
+instantiation, used by callers to safely resolve a string input into a concrete category instance.
 
 Each concrete subclass (`FoodCategory`, `TransportCategory`, `EntertainmentCategory`, `UtilitiesCategory`,
 `OtherCategory`) implements `getName` and `getSortOrder` with a fixed return value, defining both its display
 label and its position in the sorted expense list. `Category` implements `Comparable<Category>` so that standard
 Java sorting utilities can order expenses by category without any sorting logic in `ExpenseList` itself.
 
-### Archive Expenses 
+### Archive Expenses
+
 #### Class Diagram
+
 ![Class Diagram](diagram/ArchiveExpense-ClassDiagram.jpg)
 The above class diagram illustrates the design of the month archiving feature and the classes that directly participate
-in it. 
+in it.
 
-CommandHandler triggers the archival through the `save` command, while FinTrackPro retrieves archived records during `list` display.
-Both classes depend on MonthlyArchive as the archive service class. 
+CommandHandler triggers the archival through the `save` command, while FinTrackPro retrieves archived records during
+`list` display.
+Both classes depend on MonthlyArchive as the archive service class.
 
-MonthlyArchive is responsible for persisting and loading monthly archive data, and it produces ArchivedExpense objects when archived
-entries are read back from storage. 
+MonthlyArchive is responsible for persisting and loading monthly archive data, and it produces ArchivedExpense objects
+when archived
+entries are read back from storage.
 
-For data sources, MonthlyArchive reads from both ExpenseList and RecurringExpenseList, accessing individual Expense and RecurringExpense
-items. All archived entries are represented uniformly as ArchivedExpense, so listing logic can display historical records through a consistent
+For data sources, MonthlyArchive reads from both ExpenseList and RecurringExpenseList, accessing individual Expense and
+RecurringExpense
+items. All archived entries are represented uniformly as ArchivedExpense, so listing logic can display historical
+records through a consistent
 format.
 
 #### Sequence Diagram
+
 ![Sequence Diagram](diagram/ArchiveExpense-SequenceDiagram.jpg)
-The ArchiveExpense sequence diagram illustrates two runtime flows: saving a month and displaying archived history. 
+The ArchiveExpense sequence diagram illustrates two runtime flows: saving a month and displaying archived history.
 
-In the save flow, the user enters the `save` command, and CommandHandler creates and uses MonthlyArchive, and invokes monthly save logic. MonthlyArchive
-iterates through current one-time and recurring expense collections, then writes archive rows into the month's archive file (MonthN).
+In the save flow, the user enters the `save` command, and CommandHandler creates and uses MonthlyArchive, and invokes
+monthly save logic. MonthlyArchive
+iterates through current one-time and recurring expense collections, then writes archive rows into the month's archive
+file (MonthN).
 
-After successful persistence, control returns to CommandHandler, which continues month advancement and post-save updates.
+After successful persistence, control returns to CommandHandler, which continues month advancement and post-save
+updates.
 
-In the list flow, the user enters `list`, and FinTrackPro requests archive data from MonthlyArchive for previous months. MonthlyArchive
-reads each MonthN file and reconstructs rows as List<ArchivedExpense>. FinTrackPro then iterates through these archived entries (name, amount, category)
+In the list flow, the user enters `list`, and FinTrackPro requests archive data from MonthlyArchive for previous months.
+MonthlyArchive
+reads each MonthN file and reconstructs rows as List<ArchivedExpense>. FinTrackPro then iterates through these archived
+entries (name, amount, category)
 to print month-grouped history and totals.
 
 ### Managing Profile
