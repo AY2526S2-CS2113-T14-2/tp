@@ -440,11 +440,19 @@ on the data classes.
 The data is stored in a plain-text file using a pipe-delimited format. Each line is prefixed with a "Record Type" 
 identifier that determines how the line is parsed:
 
-| Prefix | Record Type      | Format                                                              |
-|--------|------------------|---------------------------------------------------------------------|
-| `P`    | Profile          | `P \| Name \| Allowance \| Savings \| BtoGoal \| Ratio \| Deadline \| CurrentMonth \| HousePrice` |
-| `E`    | One-off Expense  | `E \| Name \| Amount \| Category \| InsertionOrder`                |
-| `R`    | Recurring Expense| `R \| Name \| Amount \| Category`                                  |
+| Prefix | Record Type       |
+|--------|-------------------|
+| `P`    | Profile           |
+| `E`    | One-off Expense   |
+| `R`    | Recurring Expense |
+
+Format for each record type:
+
+```
+P | Name | Allowance | Savings | BtoGoal | Ratio | Deadline | CurrentMonth | HousePrice
+E | Name | Amount | Category | InsertionOrder
+R | Name | Amount | Category
+```
 
 > **Note:** `HousePrice` is written as `null` if the user has not set a house price. The `Name` field in `P` and `E` lines cannot contain the `|` character, as it is reserved as the field delimiter.
 
