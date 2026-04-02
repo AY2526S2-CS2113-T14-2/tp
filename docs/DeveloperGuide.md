@@ -280,6 +280,7 @@ expenses. No data is mutated beyond the reordering of the internal list.
 
 ### Category component
 ![Class Diagram](diagram/Category-UML-Diagram.png)
+
 The above class diagram illustrates the design of the category classification system and the classes that directly
 participate in it.
 
