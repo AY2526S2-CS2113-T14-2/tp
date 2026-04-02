@@ -394,7 +394,7 @@ This ensures that the `Ui` component remains clean, while the logic is encapsula
 | Distance to goal         | `btoGoal − currentSavings`                                     |
 | Monthly surplus          | `monthlyAllowance − (totalOneOffExpenses + recurringExpenses)` |
 | Percentage progress      | `(currentSavings / btoGoal) × 100` (capped at 100%)            |
-| Estimated months         | `distanceToGoal ÷ monthlySurplus` (only if surplus > 0)        |
+| Estimated months         | `distanceToGoal ÷ monthlySurplus` rounded up (ceiling), only if surplus > 0 |
 | Monthly required savings | `distanceToGoal ÷ monthsUntilDeadline`                         |
 | Readiness level          | A qualitative status mapped from the progress percentage.      |
 
@@ -440,11 +440,19 @@ on the data classes.
 The data is stored in a plain-text file using a pipe-delimited format. Each line is prefixed with a "Record Type" 
 identifier that determines how the line is parsed:
 
-| Prefix | Record Type      | Format                                                              |
-|--------|------------------|---------------------------------------------------------------------|
-| `P`    | Profile          | `P \| Name \| Allowance \| Savings \| BtoGoal \| Ratio \| Deadline \| CurrentMonth \| HousePrice` |
-| `E`    | One-off Expense  | `E \| Name \| Amount \| Category \| InsertionOrder`                |
-| `R`    | Recurring Expense| `R \| Name \| Amount \| Category`                                  |
+| Prefix | Record Type       |
+|--------|-------------------|
+| `P`    | Profile           |
+| `E`    | One-off Expense   |
+| `R`    | Recurring Expense |
+
+Format for each record type:
+
+```
+P | Name | Allowance | Savings | BtoGoal | Ratio | Deadline | CurrentMonth | HousePrice
+E | Name | Amount | Category | InsertionOrder
+R | Name | Amount | Category
+```
 
 > **Note:** `HousePrice` is written as `null` if the user has not set a house price. The `Name` field in `P` and `E` lines cannot contain the `|` character, as it is reserved as the field delimiter.
 
@@ -630,9 +638,10 @@ An individual BTO budget planner for university students planning to apply for B
 
 # 7. Instructions for Manual Testing
 Before running any test case, ensure you are starting from a clean state by deleting
-`fintrack.txt` and any files in the `monthly_archives/` folder if they exist. Launch
-the application with `java -jar FinTrackPro.jar` and complete the initial setup when
-prompted to establish a valid profile before testing profile-dependent commands.
+`fintrack.txt` and any files in the `monthly_archives/` folder if they exist. Both are
+located in the same directory from which the JAR is run. Launch the application with
+`java -jar FinTrackPro.jar` and complete the initial setup when prompted to establish
+a valid profile before testing profile-dependent commands.
 
 ## 7.1 Test cases
 
@@ -782,7 +791,12 @@ prompted to establish a valid profile before testing profile-dependent commands.
    2. Test case: Manually edit `fintrack.txt` to remove the 8th pipe-delimited field (the currentMonth integer) from the `P` line. Start the application.
    3. Expected: Application loads successfully. The current month defaults to `1` without crashing.
 
---- 
+4. **Final save on clean exit (`bye`)**
+   1. Prerequisites: Application is running with a valid profile.
+   2. Test case: `add tea 3.00 FOOD`, then type `bye` to exit cleanly.
+   3. Expected: Re-open the application and run `list`. The "tea" expense is visible, confirming the final save on exit was performed.
+
+---
 
 ### Summary Report (`summary`)
 1. **Surplus and Estimation Accuracy**
@@ -790,7 +804,7 @@ prompted to establish a valid profile before testing profile-dependent commands.
    2. Test case: `add dinner 200 FOOD`, then `summary`.
    3. Expected: Report shows Surplus: $800.00, Distance to Goal: $5000.00, and Estimate: 7 months.
    4. Test case: `add rent 900 UTILITIES` (Total expenses: $1100), then `summary`.
-   5. Expected: Report shows Surplus: -$100.00 and Estimate: "Goal unreachable (Negative or Zero Surplus)".
+   5. Expected: Report shows Surplus: -$100.00 and Estimate: "Infinite (Surplus is $0 or negative!)".
 
 2. **Readiness Level Mapping**
    1. Test case: Adjust savings so they are exactly 50% of the BTO goal. Run `summary`.
