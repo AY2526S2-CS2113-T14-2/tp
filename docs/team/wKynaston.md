@@ -18,48 +18,45 @@ needs to save and whether additional financing is required.
 ### Enhancements Implemented
 
 **1. Expense and ExpenseList (`Expense.java`, `ExpenseList.java`)**
-- **What it does**: `Expense` models a one-off expense (`name`, `amount`, `category`), while `ExpenseList` manages a collection 
-  with operations such as `add`, `delete`, `retrieve`, `sort`, and `getTotal()`.
-- **Design**: Serves as the core abstraction for one-off expenses, encapsulating data and behaviour to avoid direct manipulation 
-  of raw collections.
-- **Highlights**: Centralizes total calculation and index validation for consistent behaviour across commands. The design
-  was extended by a teammate (e.g., `insertionOrder`, sorting) without refactoring, showing extensibility.
+- **What it does**: `Expense` models a one-off expense (`name`, `amount`, `category`), while `ExpenseList` manages a 
+  collection with operations such as `add`, `delete`, `retrieve`, `sort`, and `getTotal()`.
+- **Justification**: Serves as the core abstraction for one-off expenses, encapsulating data and behaviour to avoid direct 
+  manipulation of raw collections.
+- **Highlights**: Centralizes total calculation and index validation; later extended (e.g., sorting, `insertionOrder`) 
+  without refactoring, demonstrating extensibility.
 
 **2. RecurringExpense and RecurringExpenseList (`RecurringExpense.java`, `RecurringExpenseList.java`)**
-- **What it does**: `RecurringExpense` represents persistent expenses, while `RecurringExpenseList` manages them with `add`, 
-  `delete`, and `getTotal()`.
-- **Design**: Separated from one-off expenses due to different lifecycle (persists across months).
+- **What it does**: `RecurringExpense` represents persistent expenses, while `RecurringExpenseList` manages them with 
+  `add`, `delete`, and `getTotal()`.
+- **Justification**: Recurring expenses have a different lifecycle (persist across months), so separating them avoids 
+  mixing temporary and persistent data.
 - **Highlights**: Mirrors `ExpenseList` but is not cleared during monthly rollover, reinforcing lifecycle distinction.
 
-**3. `handleAdd()` and parsing (`CommandHandler.java`)**
-- **What it does**: Parses input, validates arguments, and inserts into the appropriate list.
-- **Highlights**: Supports:
-  - `add <name> <amount> <category>`
-  - `add <name> <amount> <category> recurring`  
-    Handles multi-word names and routes based on the optional `recurring` flag.
+**3. `handleAdd()` and argument parsing (`CommandHandler.java`)**
+- **What it does**: Parses user input, validates arguments, and inserts into either `ExpenseList` or `RecurringExpenseList`.
+- **Justification**: Separating parsing from execution improves clarity and maintainability for this core command.
+- **Highlights**: Supports both standard and `recurring` formats, handles multi-word names, and routes correctly based on the flag.
 
 **4. `parseAmount()` (`CommandHandler.java`)**
-- **What it does**: Converts input to `BigDecimal`.
-- **Highlights**: Enforces non-negative values and max two decimal places for safe financial calculations.
+- **What it does**: Converts and validates input into `BigDecimal`.
+- **Justification**: Financial data requires precision and strict validation.
+- **Highlights**: Enforces non-negative values and up to two decimal places, preventing invalid calculations.
 
-**5. Delete logic (`CommandHandler.java`)**
-- **What it does**: `handleDelete()`, `handleDeleteRecurring()`, and `parseDeleteIndex()` manage deletion for both lists.
-- **Highlights**: Validates integer input and bounds, and retrieves totals before and after deletion to ensure correctness 
-  and accurate feedback.
+**5. `handleDelete()`, `handleDeleteRecurring()`, and `parseDeleteIndex()` (`CommandHandler.java`)**
+- **What it does**: Handles deletion of one-off and recurring expenses with index validation.
+- **Justification**: Ensures safe, consistent, and unambiguous deletion across both expense types.
+- **Highlights**: Validates integer input and bounds; retrieves totals before and after deletion for correctness and user feedback.
 
-**6. Listing and display (`FinTrackPro.java`, `Ui.java`)**
-- **What it does**: Displays recurring and one-off expenses separately via `list`.
-- **Highlights**: Improves readability and aligns UI output with internal separation of expense types.
+**6. Listing and display logic (`FinTrackPro.java`, `Ui.java`)**
+- **What it does**: Displays recurring and one-off expenses in separate sections via `list`.
+- **Justification**: Improves readability and reflects their different roles in budgeting.
+- **Highlights**: Clearly distinguishes recurring commitments from monthly expenses, aligning UI with internal data separation.
 
-**7. Monthly rollover (`handleSaveMonth()`, `MonthlyArchive`)**
+**7. Monthly rollover and archiving (`handleSaveMonth()`, `MonthlyArchive`)**
 - **What it does**: Archives expenses, clears one-off entries, and advances the month while preserving recurring expenses.
-- **Highlights**:
-  - Core archive logic by teammate
-  - Extended to support recurring expenses
-  - Uses prefixes:
-    - `E` (one-off)
-    - `R` (recurring)  
-      Ensures consistency between runtime behaviour and stored data.
+- **Justification**: Models a realistic monthly budgeting cycle.
+- **Highlights**: Core logic by teammate; extended to support recurring expenses; uses `E` (one-off) and `R` (recurring) 
+  prefixes for consistent storage.
 
 ---
 
