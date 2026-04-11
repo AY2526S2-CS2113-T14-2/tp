@@ -121,7 +121,7 @@ public class SummaryReport {
                     .intValue();
 
             assert calcPercentage >= 0 : "Percentage calculation resulted in negative value";
-            return calcPercentage;
+            return Math.min(calcPercentage, 100);
         }
         logger.warning("BTO goal is zero; percentage set to 0.");
         return 0;
