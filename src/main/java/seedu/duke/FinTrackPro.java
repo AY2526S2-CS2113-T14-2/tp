@@ -405,7 +405,22 @@ public class FinTrackPro {
             logger.warning(
                     "state=command.dispatch.destructive | expected="
                             + "handler.handleReset with confirmation | command=reset");
-            handler.handleReset(in);
+            boolean wasReset = handler.handleReset(in);
+            if (wasReset) {
+                String newName = performInitialSetup(in);
+                profile.setName(newName);
+                try {
+                    storage.save(profile, expenseList, recurringExpenseList);
+                    logger.info("Post-reset setup saved to disk.");
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "Failed to save after post-reset setup: " + e.getMessage(), e);
+                    ui.printLine("Warning: Could not save your new profile to disk.");
+                }
+                ui.printLine("");
+                ui.printLine("Type 'help' to view my currently supported commands!");
+                ui.printLine("Type 'bye' to exit!");
+                ui.printLine("");
+            }
             break;
         case "sort":
             logState("command.dispatch", "handler.handleSort", "command=sort, rawInput='" + userInput + "'");
