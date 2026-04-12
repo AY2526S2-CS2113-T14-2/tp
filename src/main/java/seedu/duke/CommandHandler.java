@@ -234,10 +234,12 @@ public class CommandHandler {
      */
     public void handleDelete(String userInput) {
         assert userInput != null : "User input should not be null";
-        assert userInput.startsWith("delete") : "Input should start with 'delete'";
+        //trims whitespaces
+        String normalizedInput = userInput.trim();
+        assert normalizedInput.startsWith("delete") : "Input should start with 'delete'";
 
         try {
-            String rest = getString(userInput);
+            String rest = getString(normalizedInput, "delete");
 
             int index = parseDeleteIndex(rest);
 
@@ -262,9 +264,9 @@ public class CommandHandler {
         }
     }
 
-    private static String getString(String userInput) throws InvalidIndexException {
-        String rest = userInput.substring("delete".length()).trim();
-        // Reject inputs with zero or more than one argument after "delete"
+    private static String getString(String userInput, String commandWord) throws InvalidIndexException {
+        String rest = userInput.substring(commandWord.length()).trim();
+
         String[] tokens = rest.split("\\s+");
         if (rest.isEmpty() || tokens.length != 1) {
             throw new InvalidIndexException(
@@ -301,10 +303,11 @@ public class CommandHandler {
      */
     public void handleDeleteRecurring(String userInput) {
         assert userInput != null : "User input should not be null";
-        assert userInput.startsWith("deleterecurring") : "Input should start with 'deleterecurring'";
+        String normalizedInput = userInput.trim();
+        assert normalizedInput.startsWith("deleterecurring") : "Input should start with 'deleterecurring'";
 
         try {
-            String rest = userInput.substring("deleterecurring".length()).trim();
+            String rest = getString(normalizedInput, "deleterecurring");
 
             if (rest.isEmpty()) {
                 throw new InvalidIndexException("Format: deleterecurring <index>\n");
