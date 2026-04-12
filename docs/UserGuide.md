@@ -137,6 +137,9 @@ Month 1 Total: $25
 <b>NOTE:</b>
 - The keyword `recurring` is optional.
 - If omitted, the expense will be treated as a one-off expense.
+- The command format is: `add <NAME> <AMOUNT> <CATEGORY> [RECURRING]` The system interprets the last numeric token before 
+  the category as the amount. Any earlier tokens, including numbers, are treated as part of the expense name. To avoid ambiguity, 
+  users should enter exactly one amount value.
 - Expense name cannot contain the `|` character, as it is reserved as the file delimiter.
 - Name should only contain standard English letters, numbers, and common punctuation (e.g., A–Z, a–z, 0–9, spaces, ., -, _)
 - Special Unicode characters (e.g., emojis or non-English symbols) are not supported
