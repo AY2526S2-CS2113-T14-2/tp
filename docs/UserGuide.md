@@ -167,7 +167,7 @@ Total Expenditure (All Months + Recurring): $118.30
 ```
 
 ### Sorting the expenditure list: ```sort <keyword>```
-Sorts the expenditure list by category or by recency. Valid keywords are `name`, `category` and `recent`.<br>
+Sorts the expenditure list by category, by recency or by alphabetical order. Valid keywords are `name`, `category` and `recent`.<br>
 <b>Format:</b> ```sort category``` or ``` sort name ``` or ```sort recent```<br>
 <b>Example of Usage:</b> ``` sort name ``` or ```sort category```<br>
 <b>Expected Output:</b>
