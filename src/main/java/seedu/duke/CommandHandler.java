@@ -22,6 +22,9 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class CommandHandler {
+    private static final String ADD_FORMAT_MESSAGE = "Invalid add format. Use: add NAME AMOUNT CATEGORY "
+            + "[RECURRING]. Try again!\n";
+
     /**
      * Logger for recording command handler events.
      * Routes all output to the central {@code logs/fintrack.log} via {@link LoggerUtil}.
@@ -247,7 +250,7 @@ public class CommandHandler {
         }
 
         if (!amountString.matches("\\d+(\\.\\d+)?")) {
-            throw new InvalidAmountException("Amount must be a plain number.\n");
+            throw new InvalidAmountException(ADD_FORMAT_MESSAGE);
         }
 
         BigDecimal amount = parseAmount(amountString);

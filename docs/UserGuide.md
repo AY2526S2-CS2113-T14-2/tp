@@ -147,8 +147,8 @@ Month 1 Total: $25
   and may not be displayed or stored correctly
 
 ### Listing all entries: ```list```
-Shows a consolidated view of all your recorded expenses, neatly categorized by recurring commitments, previous months' 
-archives, and the current month's one-off expenses.<br>
+Shows a consolidated view of all your recorded expenses across every month, neatly categorized by recurring commitments,
+previous months' archives, and the current month's one-off expenses.<br>
 <b>Format:</b> ```list``` <br>
 <b>Example of Usage:</b> ```list```<br>
 <b>Expected Output:</b>
@@ -166,6 +166,9 @@ Month 1 Total: $88.30
 
 Total Expenditure (All Months + Recurring): $118.30
 ```
+
+<b>NOTE:</b> Empty archived months are still displayed as month sections with `No expenses recorded` and a total of
+`$0.00`, so the timeline stays continuous.
 
 ### Sorting the expenditure list: ```sort KEYWORD```
 Sorts the expenditure list by different methods - by category, by recency or by alphabetical order. Valid methods/keywords are `name`, `category` and `recent`.<br>
@@ -220,6 +223,7 @@ Current Total: $0
 ```
 <b>NOTE:</b>
 - INDEX refers to the position in the current month’s expense list.
+- When you write the `delete` command, it will only be applicable to the <b>current</b> month's expenditure!!
 
 ### Deleting a recurring entry: ```deleterecurring```
 Deletes a recurring expense from the tracker.<br>
@@ -232,7 +236,8 @@ Recurring Total: $0
 ```
 <b>NOTE:</b>  
 - INDEX refers to the position in the recurring expense list.  
-- Use `list` to view recurring expenses and their indices.  
+- Use `list` to view recurring expenses and their indices.
+- When you write the `deleterecurring` command, it will only be applicable to the <b>current</b> month's expenditure!!
 
 ### View financial summary: ```summary```
 Generates a comprehensive financial report based on your profile and current spending habits. Calculates your monthly

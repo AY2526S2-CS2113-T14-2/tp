@@ -201,6 +201,20 @@ class CommandHandlerTest {
     }
 
     @Test
+    public void handleAdd_swappedArguments_showsFormatGuidance() {
+        CapturingUi testUi = new CapturingUi();
+        ExpenseList testExpenseList = new ExpenseList();
+        CommandHandler testHandler = new CommandHandler(testUi, new Profile(),
+                testExpenseList, new RecurringExpenseList(), new Storage("fintrack.txt"));
+
+        testHandler.handleAdd("add 5 lunch food");
+
+        assertEquals(0, testExpenseList.size());
+        assertTrue(testUi.getLines().stream()
+                .anyMatch(line -> line.contains("Invalid add format. Use: add NAME AMOUNT CATEGORY [RECURRING]. Try again!")));
+    }
+
+    @Test
     public void handleAdd_validCategory_addsExpense() {
         ch.handleAdd("add lunch 3.00 FOOD");
         ch.handleAdd("add bus fare 2.00 TRANSPORT");
