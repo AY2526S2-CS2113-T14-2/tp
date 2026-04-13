@@ -30,6 +30,7 @@ ratio
 add lunch -5.00 FOOD
 save now
 save
+Y
 clear now
 clear
 n
@@ -47,6 +48,7 @@ bye now
   ratio
 0.50
   save
+n
   clear
 n
   reset

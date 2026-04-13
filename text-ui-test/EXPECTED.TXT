@@ -121,6 +121,7 @@ You cannot add a negative expenditure! Try again!
 
 Did you mean "save"? Try again!
 
+Are you sure you want to save this month's expenditures? You will not be able to update once you press Y (press Y to confirm, any key to abort)
 Month 1 expenses archived to 'monthly_archives'
 Transferred $100.00 of unspent allowance to savings
 Advanced to Month 2
@@ -203,11 +204,8 @@ Enter new ratio (0.01 to 1.0):
 
 Success! Your contribution ratio is now 0.50
 
-Month 2 expenses archived to 'monthly_archives'
-Transferred $10.00 of unspent allowance to savings
-Advanced to Month 3
-Current Savings: $1,220.00
-Monthly Allowance: $10.00
+Are you sure you want to save this month's expenditures? You will not be able to update once you press Y (press Y to confirm, any key to abort)
+Save cancelled. Your current month's data is still editable.
 
 WARNING: This will permanently delete ALL one-off expenses. Are you sure? (Input Y to clear)
 Clear cancelled. Your data is still there, bro.
