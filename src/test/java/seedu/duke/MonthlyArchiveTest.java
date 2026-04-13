@@ -73,6 +73,15 @@ public class MonthlyArchiveTest {
     }
 
     @Test
+    public void loadMonthlyExpenses_emptySavedArchive_returnsEmptyList() throws IOException {
+        archive.saveMonthlyExpenses(1, expenseList, recurringExpenseList);
+
+        List<ArchivedExpense> loaded = archive.loadMonthlyExpenses(1);
+
+        assertTrue(loaded.isEmpty());
+    }
+
+    @Test
     public void saveMonthlyExpenses_withExpenses_fileContainsData() throws IOException {
         expenseList.add("Lunch", new BigDecimal("15.50"), Category.fromString("FOOD"));
         expenseList.add("Movie", new BigDecimal("12.00"), Category.fromString("ENTERTAINMENT"));

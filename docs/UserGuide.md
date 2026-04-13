@@ -14,15 +14,15 @@ Let's get started!
 2. Download the latest ```.jar``` file of FinTrackPro from [here](https://github.com/AY2526S2-CS2113-T14-2/tP/releases).
 3. Copy the file to the folder that you want to use as the home folder for FinTrackPro.
 4. Open Terminal(Mac) or Windows Powershell(Windows), ```cd``` into the folder you put the jar file in, and use the ```java -jar FinTrackPro.jar``` command to run the application. 
-5. You should see an introduction page asking for your name.
-6. Type the command in the command line and press Enter to execute it.
+5. You should see an introduction page asking for a few things: Your name, savings, allowance, cost of BTO flat, contribution ratio, and deadline. This is part of the initial setup.
+6. After which, you can type the command in the command line and press Enter to execute it.
 7. You can refer to the [Features](#features) page for details of each command. Have fun!!
+<b>NOTE</b>: Once you start Step 5, you cannot type 'bye' to exit the program. 'bye' command should only be used after the initial setup.
 
 ## Notes about the command format
-- Words in `UPPER_CASE` are parameters to be supplied by the user. e.g. in `add <NAME> <AMOUNT> <CATEGORY>`, `NAME`, `AMOUNT` and `CATEGORY` are parameters.
-- Items within angle brackets `< >` are compulsory. e.g. `<NAME>` means `NAME` must be provided.
+- Words in `UPPER_CASE` are parameters to be supplied by the user. e.g. in `add NAME AMOUNT CATEGORY`, `NAME`, `AMOUNT` and `CATEGORY` are parameters.
 - Items in square brackets `[ ]` are optional. e.g. `[RECURRING]` can be omitted.
-- 
+
 ## Features
 
 * <b>View all commands:</b> [help](#viewing-help-help)
@@ -60,7 +60,7 @@ General Commands
 'bye'     - exit the program
 
 Daily Transaction Commands
-'add'      <name> <amount> <category> <recurring> - add a new expense
+'add'      NAME AMOUNT CATEGORY [RECURRING] - add a new expense
 (e.g., add lunch 5.50 FOOD for not recurring and add lunch 5.50 FOOD recurring for recurring)
 ..
 ..
@@ -123,7 +123,7 @@ Success! Your contribution ratio is now 0.5
 
 ### Adding an expense: ```add```
 Adds a regular expense to your monthly tracker, with optional field recurring.<br>
-<b>Format:</b> ```add <NAME> <AMOUNT> <CATEGORY> [RECURRING]``` <br>
+<b>Format:</b> ```add NAME AMOUNT CATEGORY [RECURRING]``` <br>
 <b>Example of Usage:</b> <br>
 ```add netflix 30 entertainment recurring ```<br>
 ```add breakfast 25 food``` <br>
@@ -138,7 +138,7 @@ Month 1 Total: $25
 <b>NOTE:</b>
 - The keyword `recurring` is optional.
 - If omitted, the expense will be treated as a one-off expense.
-- The command format is: `add <NAME> <AMOUNT> <CATEGORY> [RECURRING]` The system interprets the last numeric token before 
+- The command format is: `add NAME AMOUNT CATEGORY [RECURRING]` The system interprets the last numeric token before 
   the category as the amount. Any earlier tokens, including numbers, are treated as part of the expense name. To avoid ambiguity, 
   users should enter exactly one amount value.
 - Expense name cannot contain the `|` character, as it is reserved as the file delimiter.
@@ -147,8 +147,8 @@ Month 1 Total: $25
   and may not be displayed or stored correctly
 
 ### Listing all entries: ```list```
-Shows a consolidated view of all your recorded expenses, neatly categorized by recurring commitments, previous months' 
-archives, and the current month's one-off expenses.<br>
+Shows a consolidated view of all your recorded expenses across every month, neatly categorized by recurring commitments,
+previous months' archives, and the current month's one-off expenses.<br>
 <b>Format:</b> ```list``` <br>
 <b>Example of Usage:</b> ```list```<br>
 <b>Expected Output:</b>
@@ -167,8 +167,11 @@ Month 1 Total: $88.30
 Total Expenditure (All Months + Recurring): $118.30
 ```
 
-### Sorting the expenditure list: ```sort <keyword>```
-Sorts the expenditure list by category, by recency or by alphabetical order. Valid keywords are `name`, `category` and `recent`.<br>
+<b>NOTE:</b> Empty archived months are still displayed as month sections with `No expenses recorded` and a total of
+`$0.00`, so the timeline stays continuous.
+
+### Sorting the expenditure list: ```sort KEYWORD```
+Sorts the expenditure list by different methods - by category, by recency or by alphabetical order. Valid methods/keywords are `name`, `category` and `recent`.<br>
 <b>Format:</b> ```sort category``` or ``` sort name ``` or ```sort recent```<br>
 <b>Example of Usage:</b> ``` sort name ``` or ```sort category```<br>
 <b>Expected Output:</b>
@@ -210,7 +213,7 @@ Total Expenditure (All Months + Recurring): $118.30
 
 ### Deleting an entry: ```delete```
 Deletes the specified entry from the tracker.<br>
-<b>Format:</b> ```delete <INDEX>``` <br>
+<b>Format:</b> ```delete INDEX``` <br>
 <b>Example of Usage:</b> ```delete 1```<br>
 <b>Expected Output:</b>
 ```
@@ -220,10 +223,11 @@ Current Total: $0
 ```
 <b>NOTE:</b>
 - INDEX refers to the position in the current month’s expense list.
+- When you write the `delete` command, it will only be applicable to the <b>current</b> month's expenditure!!
 
 ### Deleting a recurring entry: ```deleterecurring```
 Deletes a recurring expense from the tracker.<br>
-<b>Format:</b> ```deleterecurring <INDEX>```  
+<b>Format:</b> ```deleterecurring INDEX```  
 <b>Example of Usage:</b> ```deleterecurring 1```  
 <b>Expected Output:</b>
 ```
@@ -232,7 +236,8 @@ Recurring Total: $0
 ```
 <b>NOTE:</b>  
 - INDEX refers to the position in the recurring expense list.  
-- Use `list` to view recurring expenses and their indices.  
+- Use `list` to view recurring expenses and their indices.
+- When you write the `deleterecurring` command, it will only be applicable to the <b>current</b> month's expenditure!!
 
 ### View financial summary: ```summary```
 Generates a comprehensive financial report based on your profile and current spending habits. Calculates your monthly
@@ -304,6 +309,7 @@ Monthly Allowance: $4,000.00
 ```
 <b>NOTE:</b>  
 - Any unspent allowance (monthly allowance minus total expenses) is automatically transferred to your savings balance.
+- Typically a BTO downpayment is due within 9 months of securing the flat. Hence, it should not be used beyond Month 9, though it can be used for as many months as the user wants to simulate.
 - If your total expenses exceed your monthly allowance, no transfer occurs and an overspend message is shown.
 
 ### Data Storage
@@ -357,7 +363,7 @@ R | Netflix | 30 | ENTERTAINMENT
 | `ENTERTAINMENT`| category           | category assigned to the expense                              |
 
 ## FAQ
-<b>Updated as of 1st April 2026</b>
+<b>Updated as of 13th April 2026</b>
 
 **Q**: How do I transfer my data to another computer? 
 
@@ -380,24 +386,24 @@ Watch this space for more updates!!
 
 ### Daily Transaction Commands
 
-| Action                    | Format, Examples                                 |
-|---------------------------|--------------------------------------------------|
-| Add Expense               | `add <NAME> <AMOUNT> <CATEGORY> [RECURRING]`     |
-| List Entries              | `list`                                           |
-| Delete Entry              | `delete <INDEX>` e.g. `delete 2`                 |
-| Delete Recurring          | `deleterecurring <INDEX>` eg `deleterecurring 1` |
+| Action                    | Format, Examples                         |
+|---------------------------|------------------------------------------|
+| Add Expense               | `add NAME AMOUNT CATEGORY [RECURRING]`   |
+| List Entries              | `list`                                   |
+| Delete Entry              | `delete INDEX` e.g. `delete 2`           |
+| Delete Recurring          | `deleterecurring INDEX` eg `deleterecurring 1` |
 
 ### Other Commands
 
-| Action                    | Format, Examples                                                |
-|---------------------------|-----------------------------------------------------------------|
-| Sort Entries              | `sort <keyword>` e.g. `sort category` `sort recent` `sort name` |
-| Add more savings          | `savings`                                                       |
-| Update monthly allowance  | `allowance`                                                     |
-| Update contribution ratio | `ratio`                                                         |
-| Archive Month             | `save`                                                          |
-| Clear Current Month       | `clear`                                                         |
-| Factory Reset             | `reset`                                                         |
+| Action                    | Format, Examples                                              |
+|---------------------------|---------------------------------------------------------------|
+| Sort Entries              | `sort KEYWORD` e.g. `sort category` `sort recent` `sort name` |
+| Add more savings          | `savings`                                                     |
+| Update monthly allowance  | `allowance`                                                   |
+| Update contribution ratio | `ratio`                                                       |
+| Archive Month             | `save`                                                        |
+| Clear Current Month       | `clear`                                                       |
+| Factory Reset             | `reset`                                                       |
 
 
 ### Enquiry

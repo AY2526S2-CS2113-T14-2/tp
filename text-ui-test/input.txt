@@ -30,6 +30,7 @@ ratio
 add lunch -5.00 FOOD
 save now
 save
+Y
 clear now
 clear
 n
@@ -37,4 +38,19 @@ reset now
 reset
 n
 bye now
-bye
+  help
+  summary
+  list
+  savings
+10
+  allowance
+10
+  ratio
+0.50
+  save
+n
+  clear
+n
+  reset
+n
+   bye

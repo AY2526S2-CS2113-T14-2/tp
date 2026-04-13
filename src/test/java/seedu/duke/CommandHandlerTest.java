@@ -201,6 +201,22 @@ class CommandHandlerTest {
     }
 
     @Test
+    public void handleAdd_swappedArguments_showsFormatGuidance() {
+        CapturingUi testUi = new CapturingUi();
+        ExpenseList testExpenseList = new ExpenseList();
+        CommandHandler testHandler = new CommandHandler(testUi, new Profile(),
+                testExpenseList, new RecurringExpenseList(), new Storage("fintrack.txt"));
+        String expectedMessage = "Invalid add format. Use: add NAME AMOUNT CATEGORY "
+                + "[RECURRING]. Try again!";
+
+        testHandler.handleAdd("add 5 lunch food");
+
+        assertEquals(0, testExpenseList.size());
+        assertTrue(testUi.getLines().stream()
+                .anyMatch(line -> line.contains(expectedMessage)));
+    }
+
+    @Test
     public void handleAdd_validCategory_addsExpense() {
         ch.handleAdd("add lunch 3.00 FOOD");
         ch.handleAdd("add bus fare 2.00 TRANSPORT");
@@ -317,11 +333,26 @@ class CommandHandlerTest {
         // Spend $600 (Overspent by $100)
         expenseList.add("Shopping", new BigDecimal("600"), Category.fromString("OTHER"));
 
-        ch.handleSaveMonth();
+        Scanner in = new Scanner(new ByteArrayInputStream("y\n".getBytes()));
+        ch.handleSaveMonth(in);
 
         // Savings should stay at 1000, not 900
         assertEquals(new BigDecimal("1000"), profile.getCurrentSavings());
         assertEquals(2, profile.getCurrentMonth());
+    }
+
+    @Test
+    void handleSaveMonth_cancelled_saveDoesNotAdvanceMonth() {
+        profile.setMonthlyAllowance(new BigDecimal("500"));
+        profile.setCurrentSavings(new BigDecimal("1000"));
+        expenseList.add("Shopping", new BigDecimal("100"), Category.fromString("OTHER"));
+
+        Scanner in = new Scanner(new ByteArrayInputStream("n\n".getBytes()));
+        ch.handleSaveMonth(in);
+
+        assertEquals(new BigDecimal("1000"), profile.getCurrentSavings());
+        assertEquals(1, profile.getCurrentMonth());
+        assertEquals(1, expenseList.size());
     }
 
     @Test

@@ -22,6 +22,13 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class CommandHandler {
+    private static final String SAVE_CONFIRMATION_PROMPT =
+            "Are you sure you want to save this month's expenditures? You will not be able to update once you press "
+                    + "Y\n(press Y to confirm, any key to abort)";
+
+    private static final String ADD_FORMAT_MESSAGE = "Invalid add format. Use: add NAME AMOUNT CATEGORY "
+            + "[RECURRING]. Try again!\n";
+
     /**
      * Logger for recording command handler events.
      * Routes all output to the central {@code logs/fintrack.log} via {@link LoggerUtil}.
@@ -247,7 +254,7 @@ public class CommandHandler {
         }
 
         if (!amountString.matches("\\d+(\\.\\d+)?")) {
-            throw new InvalidAmountException("Amount must be a plain number.\n");
+            throw new InvalidAmountException(ADD_FORMAT_MESSAGE);
         }
 
         BigDecimal amount = parseAmount(amountString);
@@ -689,7 +696,16 @@ public class CommandHandler {
      * </ul>
      * </p>
      */
-    public void handleSaveMonth() {
+    public void handleSaveMonth(Scanner in) {
+        assert in != null : "Scanner should not be null";
+
+        String response = ui.readLine(in, SAVE_CONFIRMATION_PROMPT).trim().toLowerCase();
+        if (!response.equals("y")) {
+            logger.info("handleSaveMonth cancelled | user did not confirm save");
+            ui.printLine("Save cancelled. Your current month's data is still editable.");
+            ui.printLine("");
+            return;
+        }
 
         int currentMonth = profile.getCurrentMonth();
         BigDecimal monthlyExpenses = expenseList.getTotal().add(recurringExpenseList.getTotal());
