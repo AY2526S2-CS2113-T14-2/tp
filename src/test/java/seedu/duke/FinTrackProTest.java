@@ -36,6 +36,17 @@ public class FinTrackProTest {
     }
 
     @Test
+    public void isExactCommandInput_exactOnlyCommandsWithSurroundingWhitespace_returnsTrue() {
+        String[] exactOnlyCommands = {
+            "help", "summary", "bye", "list", "savings", "allowance", "ratio", "save", "clear", "reset"
+        };
+
+        for (String command : exactOnlyCommands) {
+            assertTrue(FinTrackPro.isExactCommandInput("  " + command + "   ", command));
+        }
+    }
+
+    @Test
     public void isExactCommandInput_withExtraArgs_returnsFalse() {
         assertFalse(FinTrackPro.isExactCommandInput("savings 10", "savings"));
         assertFalse(FinTrackPro.isExactCommandInput("ratio 0.5", "ratio"));
