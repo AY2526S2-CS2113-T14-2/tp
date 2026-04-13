@@ -28,6 +28,7 @@ public class SummaryReport {
     public final BigDecimal totalExpenditure;
     public final BigDecimal monthlyRequired;
     public final String readinessLevel;
+    public final int adjustedMonthsLeft;
 
     /**
      * Constructs a {@code SummaryReport} from the user's current profile and expense list.
@@ -63,22 +64,23 @@ public class SummaryReport {
         // Calculate months remaining
         LocalDate today = LocalDate.now();
         Period period = Period.between(today, profile.getDeadline());
-        int monthsLeft = period.getYears() * 12 + period.getMonths();
+        int realMonthsRemaining = period.getYears() * 12 + period.getMonths();
         if (period.getDays() > 0) {
-            monthsLeft++; // Round up for partial months
+            realMonthsRemaining++; // Round up for partial months [cite: 193]
         }
-        if (monthsLeft <= 0) {
-            monthsLeft = 1;
-        }
+
+        // Subtract months already elapsed based on app month counter
+        int simulatedElapsedMonths = Math.max(0, profile.getCurrentMonth() - 1);
+        this.adjustedMonthsLeft = Math.max(1, realMonthsRemaining - simulatedElapsedMonths);
 
         // Calculate Distance to Goal / Months Remaining
         BigDecimal distanceToGoal = profile.getBtoGoal().subtract(profile.getCurrentSavings());
 
-        if (distanceToGoal.compareTo(BigDecimal.ZERO) <= 0) {
+        if (this.distance.compareTo(BigDecimal.ZERO) <= 0) {
             this.monthlyRequired = BigDecimal.ZERO;
         } else {
-            this.monthlyRequired = distanceToGoal.divide(
-                    BigDecimal.valueOf(monthsLeft), 2, java.math.RoundingMode.HALF_UP);
+            this.monthlyRequired = this.distance.divide(
+                    BigDecimal.valueOf(this.adjustedMonthsLeft), 2, RoundingMode.HALF_UP);
         }
 
         logger.fine("Report values - Distance: " + distance + ", Surplus: " + monthlySurplus);
@@ -154,6 +156,12 @@ public class SummaryReport {
         int months = monthsBig.intValue();
 
         assert months >= 0 : "Estimated months should be a positive value";
+
+        int estimatedMonths = monthsBig.intValue();
+        if (estimatedMonths > adjustedMonthsLeft) {
+            logger.warning("User rate of saving is insufficient for the deadline.");
+        }
+
         return months + " months";
     }
 }
