@@ -350,24 +350,27 @@ items. All archived entries are represented uniformly as ArchivedExpense, so lis
 records through a consistent
 format.
 
-#### Sequence Diagram
+#### Sequence Diagram: Saving Archived Expenses
 
-![Sequence Diagram](diagram/ArchiveExpense-SequenceDiagram.jpg)
-The ArchiveExpense sequence diagram illustrates two runtime flows: saving a month and displaying archived history.
+![Sequence Diagram](diagram/ArchiveExpense-SaveSequenceDiagram.png)
+This sequence diagram shows the runtime flow when the user executes `save`.
 
-In the save flow, the user enters the `save` command, and CommandHandler creates and uses MonthlyArchive, and invokes
-monthly save logic. MonthlyArchive
-iterates through current one-time and recurring expense collections, then writes archive rows into the month's archive
-file (MonthN).
+`CommandHandler` invokes the month archival operation through `MonthlyArchive`, which reads current one-off and
+recurring expense data and persists them into the current month file (`MonthN`) under `monthly_archives/`.
 
-After successful persistence, control returns to CommandHandler, which continues month advancement and post-save
-updates.
+After a successful write, control returns to `CommandHandler`, which continues the post-save flow (month advancement,
+monthly reset, and savings carry-over).
 
-In the list flow, the user enters `list`, and FinTrackPro requests archive data from MonthlyArchive for previous months.
-MonthlyArchive
-reads each MonthN file and reconstructs rows as `List<ArchivedExpense>`. FinTrackPro then iterates through these
-archived entries (name, amount, category)
-to print month-grouped history and totals.
+#### Sequence Diagram: Displaying Archived Expenses
+
+![Sequence Diagram](diagram/ArchiveExpense-DisplaySequenceDiagram.png)
+This sequence diagram shows the runtime flow when the user executes `list`.
+
+`FinTrackPro` requests archived data from `MonthlyArchive` for previously saved months. `MonthlyArchive` reads each
+`MonthN` archive file and reconstructs entries as `List<ArchivedExpense>`.
+
+`FinTrackPro` then iterates through the reconstructed entries and prints the month-by-month sections and totals in the
+CLI output.
 
 ### Managing Profile
 
