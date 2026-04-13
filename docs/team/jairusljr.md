@@ -125,6 +125,8 @@ Added test cases for:
   data loss if the app is closed before the first command is entered
 - Expanded the test suite for `SummaryReportTest` to include simulation advancement, boundary checks for 
   readiness levels, and rounding-up logic for fractional months.
+- Produced and edited the product demonstration video, showcasing core features and user workflows for the v2.1 release.
+- Managed the final release cycle for v2.1, conducting comprehensive pre-submission checks to ensure documentation and codebase compliance.
 ---
 
 ### Review/Mentoring Contributions
